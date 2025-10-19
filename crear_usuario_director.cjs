@@ -1,4 +1,4 @@
-const { PrismaClient } = require('./generated/prisma');
+const { PrismaClient } = require('../../generated/prisma');
 const bcrypt = require('bcryptjs');
 
 const prisma = new PrismaClient();
@@ -85,8 +85,8 @@ async function crearUsuarioDirector() {
     const usuario = await prisma.usuarios.create({
       data: {
         dni: '12345678',
-        nombres: 'Briyan',
-        apellidos: 'Quispe',
+        nombre: 'Briyan',
+        apellido: 'Quispe',
         email: 'briyan@escuela.edu.pe',
         telefono: '987654321',
         direccion: 'Lima, Perú',
@@ -103,7 +103,7 @@ async function crearUsuarioDirector() {
     console.log('✅ Usuario director creado exitosamente:');
     console.log('🆔 ID:', usuario.id);
     console.log('📧 Email:', usuario.email);
-    console.log('👤 Nombres:', usuario.nombres, usuario.apellidos);
+    console.log('👤 Nombre:', usuario.nombre, usuario.apellido);
     console.log('🆔 DNI:', usuario.dni);
     console.log('📞 Teléfono:', usuario.telefono);
     console.log('🏠 Dirección:', usuario.direccion);
