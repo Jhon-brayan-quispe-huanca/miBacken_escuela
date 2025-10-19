@@ -3,6 +3,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { PrismaClient } from '../generated/prisma/index.js';
+const prisma = new PrismaClient();
 import { serve } from '@hono/node-server';
 import authRoutes from './routes/authRoutes.js';
 import directorRoutes from './routes/directorRoutes.js';
@@ -23,8 +24,7 @@ import { publicCarnetRoutes } from './routes/publicCarnetRoutes.js';
 import publicRoutes from './routes/publicRoutes.js';
 import uploadController from './controllers/uploadController.js';
 import notificacionController from './controllers/notificacionController.js';
-// Inicializar Prisma Client
-const prisma = new PrismaClient();
+// Prisma Client ya inicializado arriba
 // Crear aplicación Hono
 const app = new Hono();
 // Middlewares globales
