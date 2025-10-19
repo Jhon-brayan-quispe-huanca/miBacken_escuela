@@ -7,7 +7,7 @@
     "dev": "tsx --env-file=.env src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "postinstall": "node configure-prisma.cjs",
+    "postinstall": "node fix-prisma-final.cjs",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:pull": "prisma db pull",
