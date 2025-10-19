@@ -4,7 +4,17 @@ import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 import { PrismaClient } from '../generated/prisma/index.js';
 
-const prisma = new PrismaClient();
+// Configuración optimizada para Render Free Tier
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.DATABASE_URL
+    }
+  },
+  // Configuración para Render Free Tier
+  log: ['error'],
+  errorFormat: 'minimal'
+});
 
 import { serve } from '@hono/node-server'
 import { createServer } from 'node:http'
