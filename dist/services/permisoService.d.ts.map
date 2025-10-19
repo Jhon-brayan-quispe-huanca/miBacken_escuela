@@ -1,0 +1,1 @@
+{"version":3,"file":"permisoService.d.ts","sourceRoot":"","sources":["../../src/services/permisoService.ts"],"names":[],"mappings":"AAIA,eAAO,MAAM,cAAc;IACzB;;OAEG;yCACwC,GAAG;IA+C9C;;OAEG;4CAC2C,MAAM,UAAU,UAAU,GAAG,WAAW,kBAAkB,MAAM;IA6C9G;;OAEG;6CAC4C,MAAM;;;;;;;IAsDrD;;OAEG;2CAC0C,MAAM,gBAAgB,IAAI;IA0BvE;;OAEG;uCACsC,MAAM;IAyE/C;;OAEG;yCACwC,MAAM;;;;;;;;;;;CA6ClD,CAAC"}

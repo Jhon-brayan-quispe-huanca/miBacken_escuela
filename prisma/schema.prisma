@@ -1,0 +1,339 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ========================================
+// ROLES - 4 roles fijos con IDs específicos
+// ========================================
+model roles {
+  id                Int        @id
+  nombre            String     @unique @db.VarChar(50)
+  descripcion       String?
+  requiere_dni      Boolean?   @default(true)
+  puede_login_email Boolean?   @default(false)
+  created_at        DateTime?  @default(now()) @db.Timestamp(6)
+  updated_at        DateTime?  @default(now()) @db.Timestamp(6)
+  usuarios          usuarios[]
+  
+  @@map("roles")
+}
+
+// ========================================
+// USUARIOS - Solo 4 tipos (sin estudiantes)
+// ========================================
+model usuarios {
+  id                   Int                    @id @default(autoincrement())
+  dni                  String?                @unique @db.VarChar(8)
+  nombres              String                 @db.VarChar(100)
+  apellidos            String                 @db.VarChar(100)
+  email                String?                @unique @db.VarChar(100)
+  telefono             String?                @db.VarChar(15)
+  direccion            String?
+  fecha_nacimiento     DateTime?              @db.Date
+  genero               String?                @db.VarChar(10)
+  rol_id               Int
+  password_hash        String                 @db.VarChar(255)
+  activo               Boolean?               @default(true)
+  ultimo_login         DateTime?              @db.Timestamp(6)
+  created_at           DateTime?              @default(now()) @db.Timestamp(6)
+  updated_at           DateTime?              @default(now()) @db.Timestamp(6)
+  
+  // Relaciones
+  apoderados           apoderados[]
+  asistencia_general  asistencia_general[]
+  notificaciones      notificaciones[]
+  profesores          profesores[]
+  solicitudes_permisos solicitudes_permisos[]
+  roles                roles                  @relation(fields: [rol_id], references: [id], onDelete: Restrict, onUpdate: NoAction)
+
+  @@index([activo], map: "idx_usuarios_activo")
+  @@index([dni], map: "idx_usuarios_dni")
+  @@index([email], map: "idx_usuarios_email")
+  @@index([rol_id], map: "idx_usuarios_rol")
+}
+
+// ========================================
+// APODERADOS - Simplificado
+// ========================================
+model apoderados {
+  id                   Int                    @id @default(autoincrement())
+  usuario_id           Int
+  direccion            String?
+  created_at           DateTime?              @default(now()) @db.Timestamp(6)
+  updated_at           DateTime?              @default(now()) @db.Timestamp(6)
+  
+  // Relaciones
+  usuarios             usuarios               @relation(fields: [usuario_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  estudiantes          estudiantes[]
+  solicitudes_permisos solicitudes_permisos[]
+}
+
+// ========================================
+// ESTUDIANTES - CON DATOS PERSONALES DIRECTOS
+// ========================================
+model estudiantes {
+  id                   Int                    @id @default(autoincrement())
+  apoderado_id         Int
+  grado_id             Int
+  seccion_id           Int
+  
+  // DATOS PERSONALES (NUEVOS)
+  nombres              String                 @db.VarChar(100)
+  apellidos            String                 @db.VarChar(100)
+  dni                  String?                @unique @db.VarChar(8)
+  genero               String?                @db.VarChar(10)
+  
+  // DATOS ACADÉMICOS
+  codigo_estudiante    String                 @unique @db.VarChar(20)
+  estado               String?                @default("Activo") @db.VarChar(20)
+  turno                String                 @default("mañana") @db.VarChar(10)
+  
+  // AUDITORÍA
+  created_at           DateTime?              @default(now()) @db.Timestamp(6)
+  updated_at           DateTime?              @default(now()) @db.Timestamp(6)
+  
+  // Relaciones
+  apoderados           apoderados             @relation(fields: [apoderado_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  grados               grados                 @relation(fields: [grado_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  secciones            secciones              @relation(fields: [seccion_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  asistencia_general asistencia_general[]
+  asistencia_salon     asistencia_salon[]
+  carnets              carnets?
+  solicitudes_permisos solicitudes_permisos[]
+  notificaciones       notificaciones[]       // Relación con notificaciones
+
+  @@index([apoderado_id], map: "idx_estudiantes_apoderado")
+  @@index([codigo_estudiante], map: "idx_estudiantes_codigo")
+  @@index([grado_id, seccion_id], map: "idx_estudiantes_grado_seccion")
+  @@index([dni], map: "idx_estudiantes_dni")
+}
+
+// ========================================
+// PROFESORES - Sin cambios
+// ========================================
+model profesores {
+  id                     Int                      @id @default(autoincrement())
+  usuario_id             Int
+  especialidad           String?                  @db.VarChar(100)
+  fecha_ingreso          DateTime?                @db.Date
+  codigo_profesor        String?                  @unique @db.VarChar(20)
+  created_at             DateTime?                @default(now()) @db.Timestamp(6)
+  updated_at             DateTime?                @default(now()) @db.Timestamp(6)
+  tipo_profesor          String                   @default("aula") @db.VarChar(20)
+  
+  // Relaciones
+  asistencia_salon       asistencia_salon[]
+  profesor_grado_seccion profesor_grado_seccion[]
+  usuarios               usuarios                 @relation(fields: [usuario_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([tipo_profesor], map: "idx_profesores_tipo")
+}
+
+// ========================================
+// GRADOS - Sin cambios
+// ========================================
+model grados {
+  id                     Int                      @id @default(autoincrement())
+  nombre                 String                   @db.VarChar(20)
+  nivel                  String                   @db.VarChar(20)
+  created_at             DateTime?                @default(now()) @db.Timestamp(6)
+  updated_at             DateTime?                @default(now()) @db.Timestamp(6)
+  
+  // Relaciones
+  estudiantes            estudiantes[]
+  profesor_grado_seccion profesor_grado_seccion[]
+}
+
+// ========================================
+// SECCIONES - Sin cambios
+// ========================================
+model secciones {
+  id                     Int                      @id @default(autoincrement())
+  nombre                 String                   @db.VarChar(10)
+  created_at             DateTime?                @default(now()) @db.Timestamp(6)
+  updated_at             DateTime?                @default(now()) @db.Timestamp(6)
+  
+  // Relaciones
+  estudiantes            estudiantes[]
+  profesor_grado_seccion profesor_grado_seccion[]
+}
+
+// ========================================
+// ASISTENCIA GENERAL - Sin cambios
+// ========================================
+model asistencia_general {
+  id                   Int                   @id @default(autoincrement())
+  estudiante_id        Int
+  usuario_portero_id   Int
+  fecha                DateTime              @db.Date
+  hora_entrada         DateTime?             @db.Time(6)
+  hora_salida          DateTime?             @db.Time(6)
+  estado               String?               @default("Presente") @db.VarChar(20)
+  observaciones        String?
+  created_at           DateTime?             @default(now()) @db.Timestamp(6)
+  updated_at           DateTime?             @default(now()) @db.Timestamp(6)
+  permiso_id           Int?
+  
+  // Relaciones
+  estudiantes          estudiantes           @relation(fields: [estudiante_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  solicitudes_permisos solicitudes_permisos? @relation(fields: [permiso_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  usuarios             usuarios              @relation(fields: [usuario_portero_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([estudiante_id, fecha], map: "unique_estudiante_fecha_general")
+  @@index([estudiante_id, fecha], map: "idx_asistencia_general_estudiante_fecha")
+}
+
+// ========================================
+// ASISTENCIA SALON - Sin cambios
+// ========================================
+model asistencia_salon {
+  id                   Int                   @id @default(autoincrement())
+  estudiante_id        Int
+  profesor_id          Int
+  fecha                DateTime              @db.Date
+  estado               String?               @default("Presente") @db.VarChar(20)
+  observaciones        String?
+  created_at           DateTime?             @default(now()) @db.Timestamp(6)
+  updated_at           DateTime?             @default(now()) @db.Timestamp(6)
+  permiso_id           Int?
+  
+  // Relaciones
+  estudiantes          estudiantes           @relation(fields: [estudiante_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  solicitudes_permisos solicitudes_permisos? @relation(fields: [permiso_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  profesores           profesores            @relation(fields: [profesor_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([estudiante_id, fecha, profesor_id], map: "unique_estudiante_fecha_profesor_salon")
+  @@index([estudiante_id, fecha], map: "idx_asistencia_salon_estudiante_fecha")
+}
+
+// ========================================
+// SOLICITUDES PERMISOS - Sin cambios
+// ========================================
+model solicitudes_permisos {
+  id                      Int                  @id @default(autoincrement())
+  estudiante_id           Int
+  apoderado_id            Int
+  fecha_solicitud         DateTime             @db.Date
+  fecha_permiso_inicio    DateTime             @db.Date
+  fecha_permiso_fin       DateTime?            @db.Date
+  motivo                  String
+  estado                  String?              @default("Pendiente") @db.VarChar(20)
+  aprobado_por            Int?
+  fecha_respuesta         DateTime?            @db.Timestamp(6)
+  observaciones_respuesta String?
+  
+  // NUEVOS CAMPOS PARA DOCUMENTOS (PDF Y FOTO)
+  documento_path          String?              @db.VarChar(500)
+  documento_nombre        String?              @db.VarChar(255)
+  documento_tipo          String?              @db.VarChar(50)
+  
+  created_at              DateTime?            @default(now()) @db.Timestamp(6)
+  updated_at              DateTime?            @default(now()) @db.Timestamp(6)
+  
+  // Relaciones
+  asistencia_general      asistencia_general[]
+  asistencia_salon        asistencia_salon[]
+  apoderados              apoderados           @relation(fields: [apoderado_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  usuarios                usuarios?            @relation(fields: [aprobado_por], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  estudiantes             estudiantes          @relation(fields: [estudiante_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+// ========================================
+// CARNETS - Sin cambios
+// ========================================
+model carnets {
+  id            Int         @id @default(autoincrement())
+  estudiante_id Int         @unique
+  codigo_qr     String?
+  foto_url      String?
+  activo        Boolean?    @default(true)
+  created_at    DateTime?   @default(now()) @db.Timestamp(6)
+  updated_at    DateTime?   @default(now()) @db.Timestamp(6)
+  
+  // Relaciones
+  estudiantes   estudiantes @relation(fields: [estudiante_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([estudiante_id], map: "idx_carnets_estudiante")
+  @@index([activo], map: "idx_carnets_activo")
+}
+
+// ========================================
+// PROFESOR GRADO SECCION - Sin cambios
+// ========================================
+model profesor_grado_seccion {
+  id           Int        @id @default(autoincrement())
+  profesor_id  Int
+  grado_id     Int
+  seccion_id   Int
+  es_tutor     Boolean?   @default(false)
+  anio_escolar Int
+  activo       Boolean?   @default(true)
+  created_at   DateTime?  @default(now()) @db.Timestamp(6)
+  updated_at   DateTime?  @default(now()) @db.Timestamp(6)
+  
+  // Relaciones
+  grados       grados     @relation(fields: [grado_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  profesores   profesores @relation(fields: [profesor_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  secciones    secciones  @relation(fields: [seccion_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([profesor_id, grado_id, seccion_id, anio_escolar], map: "unique_profesor_grado_seccion_anio")
+  @@index([anio_escolar], map: "idx_profesor_grado_seccion_anio")
+  @@index([grado_id, seccion_id], map: "idx_profesor_grado_seccion_grado_seccion")
+  @@index([profesor_id], map: "idx_profesor_grado_seccion_profesor")
+}
+
+// ========================================
+// NOTIFICACIONES - MEJORADO PARA SISTEMA DE NOTIFICACIONES AVANZADO
+// ========================================
+model notificaciones {
+  id          Int       @id @default(autoincrement())
+  usuario_id  Int
+  titulo      String    @db.VarChar(200)
+  mensaje     String
+  tipo        String?   @default("General") @db.VarChar(50)
+  leido       Boolean?  @default(false)
+  fecha_envio DateTime? @default(now()) @db.Timestamp(6)
+  created_at  DateTime? @default(now()) @db.Timestamp(6)
+  updated_at  DateTime? @default(now()) @db.Timestamp(6)
+  
+  // NUEVOS CAMPOS PARA NOTIFICACIONES AVANZADAS
+  datos_adicionales  Json?      // {estudiante: "Ana", hora: "08:15", estado: "Presente"}
+  estudiante_id      Int?       // ID del estudiante relacionado
+  asistencia_id      Int?       // ID del registro de asistencia
+  prioridad          String?    @default("media") @db.VarChar(20) // "alta", "media", "baja"
+  categoria          String?    @default("general") @db.VarChar(50) // "asistencia", "permiso", "sistema"
+  fecha_leido        DateTime?  @db.Timestamp(6) // Cuándo se leyó
+  accion_requerida   String?    @db.VarChar(50) // "aprobar", "revisar", "responder"
+  
+  // Relaciones
+  usuarios    usuarios  @relation(fields: [usuario_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  estudiantes estudiantes? @relation(fields: [estudiante_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([fecha_envio], map: "idx_notificaciones_fecha")
+  @@index([leido], map: "idx_notificaciones_leido")
+  @@index([usuario_id], map: "idx_notificaciones_usuario")
+  @@index([estudiante_id], map: "idx_notificaciones_estudiante")
+  @@index([categoria], map: "idx_notificaciones_categoria")
+  @@index([prioridad], map: "idx_notificaciones_prioridad")
+}
+
+// ========================================
+// CONFIGURACION SISTEMA - Sin cambios
+// ========================================
+model configuracion_sistema {
+  id          Int       @id @default(autoincrement())
+  clave       String    @unique @db.VarChar(100)
+  valor       String
+  tipo_dato   String?   @default("string") @db.VarChar(20)
+  descripcion String?
+  categoria   String?   @default("general") @db.VarChar(50)
+  created_at  DateTime? @default(now()) @db.Timestamp(6)
+  updated_at  DateTime? @default(now()) @db.Timestamp(6)
+}
