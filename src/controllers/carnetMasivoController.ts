@@ -1,5 +1,5 @@
 import { Context } from 'hono';
-import { PrismaClient } from '../../generated/prisma/index.js';
+import { PrismaClient } from '../../generated/prisma';
 import { carnetService } from '../services/carnetService.js';
 import { CarnetMasivoService } from '../services/carnetMasivoService.js';
 import JSZip from 'jszip';

@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { PrismaClient } from '../../generated/prisma/index.js';
+import { PrismaClient } from '@prisma/client';
 import path from 'path';
 import fs from 'fs';
 const prisma = new PrismaClient();

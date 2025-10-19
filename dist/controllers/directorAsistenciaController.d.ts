@@ -7,30 +7,7 @@ export declare class DirectorAsistenciaController {
         success: true;
         data: {
             fecha: string;
-            asistencias: {
-                id: number;
-                estudiante: {
-                    id: number;
-                    codigo: string;
-                    nombres: string;
-                    apellidos: string;
-                    dni: string | null;
-                    grado: string;
-                    seccion: string;
-                    turno: string;
-                    gradoId: number;
-                };
-                portero: {
-                    nombres: string;
-                    apellidos: string;
-                };
-                estado: string | null;
-                fecha: string;
-                hora_entrada: string | null;
-                hora_salida: string | null;
-                hora: string | undefined;
-                observaciones: string | null;
-            }[];
+            asistencias: any;
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
@@ -43,28 +20,8 @@ export declare class DirectorAsistenciaController {
         success: true;
         data: {
             fecha: string;
-            total: number;
-            asistencias: {
-                id: number;
-                estudiante: {
-                    id: number;
-                    nombre: string;
-                    grado: string;
-                    seccion: string;
-                    dni: string | null;
-                    codigo: string;
-                };
-                estado: string | null;
-                observaciones: string | null;
-                fecha: string;
-                profesor: {
-                    id: number;
-                    nombre: string;
-                    tipo_profesor: string;
-                } | null;
-                created_at: string | null;
-                updated_at: string | null;
-            }[];
+            total: any;
+            asistencias: any;
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
@@ -80,11 +37,11 @@ export declare class DirectorAsistenciaController {
         success: true;
         message: string;
         data: {
-            id: number;
+            id: any;
             estudiante: string;
-            estado: string | null;
-            observaciones: string | null;
-            updated_at: string | null;
+            estado: any;
+            observaciones: any;
+            updated_at: any;
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
@@ -98,12 +55,12 @@ export declare class DirectorAsistenciaController {
         data: {
             fecha: string;
             estadisticas: {
-                total: number;
-                presentes: number;
-                tardes: number;
-                ausentes: number;
-                justificados: number;
-                salidas: number;
+                total: any;
+                presentes: any;
+                tardes: any;
+                ausentes: any;
+                justificados: any;
+                salidas: any;
             };
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
@@ -115,11 +72,7 @@ export declare class DirectorAsistenciaController {
         message: string;
     }, 400, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
-        data: {
-            id: number;
-            nombre: string;
-            tipo_profesor: string;
-        }[];
+        data: any;
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
         message: string;
@@ -133,28 +86,14 @@ export declare class DirectorAsistenciaController {
             fecha: string;
             grado_id: number;
             seccion_id: number;
-            estudiantes: {
-                estudiante_id: number;
-                codigo_estudiante: string;
-                nombre_completo: string;
-                nombres: string;
-                apellidos: string;
-                dni: string | null;
-                grado: string;
-                nivel: string;
-                seccion: string;
-                estado_asistencia: string | null;
-                profesor_registro: string | null;
-                fecha_registro: string | null;
-                observaciones: string | null;
-            }[];
+            estudiantes: any;
             estadisticas: {
-                total: number;
-                presentes: number;
-                ausentes: number;
-                tardanzas: number;
-                justificados: number;
-                sinRegistrar: number;
+                total: any;
+                presentes: any;
+                ausentes: any;
+                tardanzas: any;
+                justificados: any;
+                sinRegistrar: any;
             };
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{

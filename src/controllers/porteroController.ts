@@ -1,5 +1,5 @@
 import { Context } from 'hono';
-import { PrismaClient } from '../../generated/prisma/index.js';
+import { PrismaClient } from '../../generated/prisma';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { AsistenciaService, DatosQREstudiante } from '../services/asistenciaService.js';

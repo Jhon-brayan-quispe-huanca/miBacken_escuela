@@ -1,7 +1,7 @@
 import { Context } from 'hono';
-import { PrismaClient } from '../../generated/prisma/index.js';
+import { PrismaClient } from '../../generated/prisma';
 import * as XLSX from 'xlsx';
-import ExcelJS from 'exceljs';
+import * as ExcelJS from 'exceljs';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -16,8 +16,8 @@ export class DirectorReporte {
     año: number, 
     profesorId?: number
   ): Promise<any[][]> {
-    console.log('🔍 DirectorReporte: Generando reporte mensual');
-    console.log('🔍 Parámetros:', { gradoId, seccionId, mes, año, profesorId });
+    console.log(' DirectorReporte: Generando reporte mensual');
+    console.log(' Parámetros:', { gradoId, seccionId, mes, año, profesorId });
     
     try {
       // Obtener estudiantes del grado y sección
@@ -38,7 +38,7 @@ export class DirectorReporte {
         ]
       });
 
-      console.log('🔍 Estudiantes encontrados:', estudiantes.length);
+      console.log(' Estudiantes encontrados:', estudiantes.length);
 
       if (estudiantes.length === 0) {
         return [
@@ -146,7 +146,7 @@ export class DirectorReporte {
 
         // Crear mapa de asistencias por fecha
         const asistenciasPorFecha = new Map();
-        asistenciasEstudiante.forEach(asistencia => {
+        asistenciasEstudiante.forEach((asistencia: any) => {
           const fecha = asistencia.fecha.toISOString().split('T')[0];
           asistenciasPorFecha.set(fecha, asistencia.estado);
         });
@@ -172,10 +172,10 @@ export class DirectorReporte {
         });
 
         // Calcular totales MEJORADOS según tu propuesta
-        const totalPresentes = asistenciasEstudiante.filter(a => a.estado === 'Presente').length;
-        const totalJustificados = asistenciasEstudiante.filter(a => a.estado === 'Justificado').length;
-        const totalAusentes = asistenciasEstudiante.filter(a => a.estado === 'Ausente').length;
-        const totalTardanzas = asistenciasEstudiante.filter(a => a.estado === 'Tardanza').length;
+        const totalPresentes = asistenciasEstudiante.filter((a: any) => a.estado === 'Presente').length;
+        const totalJustificados = asistenciasEstudiante.filter((a: any) => a.estado === 'Justificado').length;
+        const totalAusentes = asistenciasEstudiante.filter((a: any) => a.estado === 'Ausente').length;
+        const totalTardanzas = asistenciasEstudiante.filter((a: any) => a.estado === 'Tardanza').length;
 
         const fila = [
           i + 1, // N°
@@ -188,17 +188,17 @@ export class DirectorReporte {
         ];
         
         reporteData.push(fila);
-        console.log(`✅ Fila agregada para ${estudiante.nombres}: P=${totalPresentes}, J=${totalJustificados}, A=${totalAusentes}, T=${totalTardanzas}`);
+        console.log(` Fila agregada para ${estudiante.nombres}: P=${totalPresentes}, J=${totalJustificados}, A=${totalAusentes}, T=${totalTardanzas}`);
       }
 
-      console.log('✅ DirectorReporte: Reporte generado exitosamente');
-      console.log('📊 Total filas:', reporteData.length);
-      console.log('📊 Total estudiantes:', estudiantes.length);
+      console.log(' DirectorReporte: Reporte generado exitosamente');
+      console.log(' Total filas:', reporteData.length);
+      console.log(' Total estudiantes:', estudiantes.length);
 
       return reporteData;
 
     } catch (error) {
-      console.error('❌ DirectorReporte: Error al generar reporte:', error);
+      console.error(' DirectorReporte: Error al generar reporte:', error);
       return [
         ['N°', 'ALUMNO', 'ERROR'],
         [1, 'Error al obtener datos', 'Verificar conexión a la base de datos']
@@ -262,7 +262,7 @@ export class DirectorReporte {
   // Aplicar estilos al reporte Excel
   static aplicarEstilosExcel(workbook: any, worksheet: any): void {
     try {
-      console.log('🎨 DirectorReporte: Aplicando estilos al Excel');
+      console.log(' DirectorReporte: Aplicando estilos al Excel');
       
       // Definir estilos
       const estilos = {
@@ -374,10 +374,10 @@ export class DirectorReporte {
       this._centrarTitulos(worksheet);
       this._corregirTotales(worksheet);
       
-      console.log('✅ DirectorReporte: Estilos aplicados exitosamente');
+      console.log(' DirectorReporte: Estilos aplicados exitosamente');
       
     } catch (error) {
-      console.error('❌ DirectorReporte: Error al aplicar estilos:', error);
+      console.error(' DirectorReporte: Error al aplicar estilos:', error);
     }
   }
 
@@ -392,7 +392,7 @@ export class DirectorReporte {
       if (fs.existsSync(logoPath)) {
         const logoBuffer = fs.readFileSync(logoPath);
         
-        console.log('✅ DirectorReporte: Logo encontrado, tamaño:', logoBuffer.length, 'bytes');
+        console.log(' DirectorReporte: Logo encontrado, tamaño:', logoBuffer.length, 'bytes');
         
         // Agregar imagen real usando ExcelJS
         const imageId = workbook.addImage({
@@ -406,12 +406,12 @@ export class DirectorReporte {
           ext: { width: 60, height: 60 } // Tamaño 60x60 pixels, más pequeño y elegante
         });
         
-        console.log('✅ DirectorReporte: Logo real incluido exitosamente en A1');
-        console.log('🎨 DirectorReporte: Tamaño del logo: 60x60 pixels (elegante)');
+        console.log(' DirectorReporte: Logo real incluido exitosamente en A1');
+        console.log(' DirectorReporte: Tamaño del logo: 60x60 pixels (elegante)');
         
       } else {
-        console.log('⚠️ DirectorReporte: Logo no encontrado en:', logoPath);
-        console.log('📁 DirectorReporte: Verificando directorio:', path.dirname(logoPath));
+        console.log(' DirectorReporte: Logo no encontrado en:', logoPath);
+        console.log(' DirectorReporte: Verificando directorio:', path.dirname(logoPath));
         
         // Intentar rutas alternativas
         const alternativePaths = [
@@ -422,7 +422,7 @@ export class DirectorReporte {
         
         for (const altPath of alternativePaths) {
           if (fs.existsSync(altPath)) {
-            console.log('✅ DirectorReporte: Logo encontrado en ruta alternativa:', altPath);
+            console.log(' DirectorReporte: Logo encontrado en ruta alternativa:', altPath);
             const logoBuffer = fs.readFileSync(altPath);
             
             const imageId = workbook.addImage({
@@ -435,15 +435,15 @@ export class DirectorReporte {
               ext: { width: 80, height: 80 }
             });
             
-            console.log('✅ DirectorReporte: Logo incluido desde ruta alternativa');
+            console.log(' DirectorReporte: Logo incluido desde ruta alternativa');
             return;
           }
         }
         
-        console.log('❌ DirectorReporte: Logo no encontrado en ninguna ruta');
+        console.log(' DirectorReporte: Logo no encontrado en ninguna ruta');
       }
     } catch (error) {
-      console.error('❌ DirectorReporte: Error al incluir logo:', error);
+      console.error(' DirectorReporte: Error al incluir logo:', error);
     }
   }
 
@@ -456,10 +456,10 @@ export class DirectorReporte {
     profesorId?: number
   ): Promise<Buffer> {
     try {
-      console.log('🔍 DirectorReporte: Generando reporte MEJORADO con ExcelJS');
+      console.log(' DirectorReporte: Generando reporte MEJORADO con ExcelJS');
       
       // Crear workbook con ExcelJS
-      const workbook = new ExcelJS.Workbook();
+      const workbook = new (ExcelJS as any).Workbook();
       const worksheet = workbook.addWorksheet('Control Mensual');
       
       // Obtener datos del reporte
@@ -484,7 +484,7 @@ export class DirectorReporte {
       return Buffer.from(buffer);
       
     } catch (error) {
-      console.error('❌ DirectorReporte: Error al generar con ExcelJS:', error);
+      console.error(' DirectorReporte: Error al generar con ExcelJS:', error);
       throw error;
     }
   }
@@ -688,7 +688,7 @@ export class DirectorReporte {
       console.log('✅ DirectorReporte: Estilos ELEGANTES Y PROFESIONALES aplicados');
       
     } catch (error) {
-      console.error('❌ DirectorReporte: Error al aplicar estilos elegantes:', error);
+      console.error(' DirectorReporte: Error al aplicar estilos elegantes:', error);
     }
   }
 
@@ -731,7 +731,7 @@ export class DirectorReporte {
       
       console.log('✅ DirectorReporte: Títulos centrados');
     } catch (error) {
-      console.error('❌ DirectorReporte: Error al centrar títulos:', error);
+      console.error(' DirectorReporte: Error al centrar títulos:', error);
     }
   }
 
@@ -768,9 +768,9 @@ export class DirectorReporte {
           }
         }
       }
-      console.log('✅ DirectorReporte: Totales corregidos');
+      console.log(' DirectorReporte: Totales corregidos');
     } catch (error) {
-      console.error('❌ DirectorReporte: Error al corregir totales:', error);
+      console.error(' DirectorReporte: Error al corregir totales:', error);
     }
   }
 }

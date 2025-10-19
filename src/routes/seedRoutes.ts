@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { PrismaClient } from '../../generated/prisma/index.js';
+import { PrismaClient } from '../../generated/prisma';
 import bcrypt from 'bcryptjs';
 
 const seedRoutes = new Hono();

@@ -6,51 +6,15 @@ export declare class EstudiantesController {
     }, 403, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
         data: {
-            estudiantes: {
-                apoderados: {
-                    usuarios: {
-                        email: string | null;
-                        nombres: string;
-                        apellidos: string;
-                        telefono: string | null;
-                    };
-                    id: number;
-                    direccion: string | null;
-                    created_at: string | null;
-                    updated_at: string | null;
-                    usuario_id: number;
-                };
-                grados: {
-                    id: number;
-                    nombre: string;
-                    nivel: string;
-                };
-                secciones: {
-                    id: number;
-                    nombre: string;
-                };
-                id: number;
-                dni: string | null;
-                nombres: string;
-                apellidos: string;
-                genero: string | null;
-                created_at: string | null;
-                updated_at: string | null;
-                estado: string | null;
-                apoderado_id: number;
-                grado_id: number;
-                seccion_id: number;
-                codigo_estudiante: string;
-                turno: string;
-            }[];
+            estudiantes: any;
             pagination: {
                 page: number;
                 limit: number;
-                total: number;
+                total: any;
                 pages: number;
             };
         };
-    }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
+    }, import("hono/utils/http-status").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
         message: string;
     }, 500, "json">)>;
@@ -65,44 +29,8 @@ export declare class EstudiantesController {
         message: string;
     }, 404, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
-        data: {
-            apoderados: {
-                usuarios: {
-                    email: string | null;
-                    nombres: string;
-                    apellidos: string;
-                    telefono: string | null;
-                };
-                id: number;
-                direccion: string | null;
-                created_at: string | null;
-                updated_at: string | null;
-                usuario_id: number;
-            };
-            grados: {
-                id: number;
-                nombre: string;
-                nivel: string;
-            };
-            secciones: {
-                id: number;
-                nombre: string;
-            };
-            id: number;
-            dni: string | null;
-            nombres: string;
-            apellidos: string;
-            genero: string | null;
-            created_at: string | null;
-            updated_at: string | null;
-            estado: string | null;
-            apoderado_id: number;
-            grado_id: number;
-            seccion_id: number;
-            codigo_estudiante: string;
-            turno: string;
-        };
-    }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
+        data: any;
+    }, import("hono/utils/http-status").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
         message: string;
     }, 500, "json">)>;
@@ -115,44 +43,8 @@ export declare class EstudiantesController {
     }, 400, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
         message: string;
-        data: {
-            apoderados: {
-                usuarios: {
-                    email: string | null;
-                    nombres: string;
-                    apellidos: string;
-                    telefono: string | null;
-                };
-                id: number;
-                direccion: string | null;
-                created_at: string | null;
-                updated_at: string | null;
-                usuario_id: number;
-            };
-            grados: {
-                id: number;
-                nombre: string;
-                nivel: string;
-            };
-            secciones: {
-                id: number;
-                nombre: string;
-            };
-            id: number;
-            dni: string | null;
-            nombres: string;
-            apellidos: string;
-            genero: string | null;
-            created_at: string | null;
-            updated_at: string | null;
-            estado: string | null;
-            apoderado_id: number;
-            grado_id: number;
-            seccion_id: number;
-            codigo_estudiante: string;
-            turno: string;
-        };
-    }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
+        data: any;
+    }, import("hono/utils/http-status").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
         message: string;
     }, 500, "json">)>;
@@ -168,44 +60,8 @@ export declare class EstudiantesController {
     }, 404, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
         message: string;
-        data: {
-            apoderados: {
-                usuarios: {
-                    email: string | null;
-                    nombres: string;
-                    apellidos: string;
-                    telefono: string | null;
-                };
-                id: number;
-                direccion: string | null;
-                created_at: string | null;
-                updated_at: string | null;
-                usuario_id: number;
-            };
-            grados: {
-                id: number;
-                nombre: string;
-                nivel: string;
-            };
-            secciones: {
-                id: number;
-                nombre: string;
-            };
-            id: number;
-            dni: string | null;
-            nombres: string;
-            apellidos: string;
-            genero: string | null;
-            created_at: string | null;
-            updated_at: string | null;
-            estado: string | null;
-            apoderado_id: number;
-            grado_id: number;
-            seccion_id: number;
-            codigo_estudiante: string;
-            turno: string;
-        };
-    }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
+        data: any;
+    }, import("hono/utils/http-status").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
         message: string;
     }, 500, "json">)>;
@@ -218,22 +74,8 @@ export declare class EstudiantesController {
     }, 400, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
         message: string;
-        data: {
-            id: number;
-            dni: string | null;
-            nombres: string;
-            apellidos: string;
-            genero: string | null;
-            created_at: string | null;
-            updated_at: string | null;
-            estado: string | null;
-            apoderado_id: number;
-            grado_id: number;
-            seccion_id: number;
-            codigo_estudiante: string;
-            turno: string;
-        };
-    }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
+        data: any;
+    }, import("hono/utils/http-status").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
         message: string;
     }, 500, "json">)>;
@@ -249,7 +91,7 @@ export declare class EstudiantesController {
     }, 404, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
         message: string;
-    }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
+    }, import("hono/utils/http-status").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
         message: string;
     }, 500, "json">)>;
@@ -259,21 +101,10 @@ export declare class EstudiantesController {
     }, 403, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
         data: {
-            grados: {
-                id: number;
-                nombre: string;
-                created_at: string | null;
-                updated_at: string | null;
-                nivel: string;
-            }[];
-            secciones: {
-                id: number;
-                nombre: string;
-                created_at: string | null;
-                updated_at: string | null;
-            }[];
+            grados: any;
+            secciones: any;
         };
-    }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
+    }, import("hono/utils/http-status").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
         message: string;
     }, 500, "json">)>;
@@ -282,20 +113,8 @@ export declare class EstudiantesController {
         message: string;
     }, 403, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
-        data: {
-            usuarios: {
-                email: string | null;
-                nombres: string;
-                apellidos: string;
-                telefono: string | null;
-            };
-            id: number;
-            direccion: string | null;
-            created_at: string | null;
-            updated_at: string | null;
-            usuario_id: number;
-        }[];
-    }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
+        data: any;
+    }, import("hono/utils/http-status").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
         message: string;
     }, 500, "json">)>;

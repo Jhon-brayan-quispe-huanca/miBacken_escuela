@@ -1,4 +1,4 @@
-import { PrismaClient } from '../../generated/prisma/index.js';
+import { PrismaClient } from '@prisma/client';
 import { getFechaActualPeru, getFechaHoraActualPeru, formatearFechaPeru, formatearHoraPeru, getInicioDiaPeru, getFinDiaPeru, getHoraActualPeruParaBD } from '../utils/dateUtils.js';
 const prisma = new PrismaClient();
 export class AsistenciaService {

@@ -27,18 +27,18 @@ export declare class PorteroController {
     }, 403, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
         estadisticas: {
-            estudiantesHoy: number;
-            asistenciasHoy: number;
-            tardanzasHoy: number;
-            ausenciasHoy: number;
-            justificadosHoy: number;
-            presentesHoy: number;
+            estudiantesHoy: any;
+            asistenciasHoy: any;
+            tardanzasHoy: any;
+            ausenciasHoy: any;
+            justificadosHoy: any;
+            presentesHoy: any;
             porcentajeAsistencia: number;
             tendencia: number;
-            estudiantesConPermisos: number;
+            estudiantesConPermisos: any;
             horaPromedioLlegada: string;
-            asistenciasAyer: number;
-            presentesAyer: number;
+            asistenciasAyer: any;
+            presentesAyer: any;
         };
         asistencias: {
             id: string | number;
@@ -193,13 +193,13 @@ export declare class PorteroController {
     }, 404, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
         estudiante: {
-            id: number;
-            codigo_estudiante: string;
-            nombre: string;
-            apellido: string;
-            grado: string;
-            seccion: string;
-            turno: string;
+            id: any;
+            codigo_estudiante: any;
+            nombre: any;
+            apellido: any;
+            grado: any;
+            seccion: any;
+            turno: any;
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         message: string;
@@ -211,36 +211,7 @@ export declare class PorteroController {
         message: string;
     }, 400, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
-        estudiantes: {
-            id: number;
-            codigo_estudiante: string;
-            nombre: string;
-            apellido: string;
-            nombreCompleto: string;
-            grado: string;
-            seccion: string;
-            turno: string;
-            tienePermisoActivo: boolean;
-            asistenciaHoy: {
-                id: number;
-                created_at: string | null;
-                updated_at: string | null;
-                estado: string | null;
-                fecha: string;
-                estudiante_id: number;
-                usuario_portero_id: number;
-                hora_entrada: string | null;
-                hora_salida: string | null;
-                observaciones: string | null;
-                permiso_id: number | null;
-            } | null;
-            permisos: {
-                id: number;
-                motivo: string;
-                fecha_inicio: string;
-                fecha_fin: string | null;
-            }[];
-        }[];
+        estudiantes: any[];
         total: number;
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         message: string;
@@ -254,19 +225,7 @@ export declare class PorteroController {
     }, 404, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
         message: string;
-        asistencia: {
-            id: number;
-            created_at: string | null;
-            updated_at: string | null;
-            estado: string | null;
-            fecha: string;
-            estudiante_id: number;
-            usuario_portero_id: number;
-            hora_entrada: string | null;
-            hora_salida: string | null;
-            observaciones: string | null;
-            permiso_id: number | null;
-        };
+        asistencia: any;
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         message: string;
     }, 500, "json">)>;

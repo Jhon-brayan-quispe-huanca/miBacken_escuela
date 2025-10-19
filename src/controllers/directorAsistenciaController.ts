@@ -1,5 +1,5 @@
 import { Context } from 'hono';
-import { PrismaClient } from '../../generated/prisma/index.js';
+import { PrismaClient } from '../../generated/prisma';
 import * as XLSX from 'xlsx';
 import { DirectorReporte } from './directorReporte.js';
 

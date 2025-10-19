@@ -8,15 +8,7 @@ export declare class CarnetMasivoController {
         message: string;
     }, 400, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
-        estudiantes: {
-            id: number;
-            codigo_estudiante: string;
-            nombre: string;
-            apellido: string;
-            grado: string;
-            seccion: string;
-            turno: string;
-        }[];
+        estudiantes: any;
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
         message: string;
@@ -30,7 +22,7 @@ export declare class CarnetMasivoController {
      */
     static obtenerEstadisticasFiltro(c: Context): Promise<(Response & import("hono").TypedResponse<{
         success: true;
-        totalEstudiantes: number;
+        totalEstudiantes: any;
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
         message: string;
