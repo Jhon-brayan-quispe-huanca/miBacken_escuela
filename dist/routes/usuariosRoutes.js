@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
-import { UsuariosController } from '../controllers/usuariosController.js';
-import { authMiddleware } from '../middleware/authMiddleware.js';
+import { UsuariosController } from '../controllers/.js';
+import { authMiddleware } from '../middleware/.js';
 const usuariosRoutes = new Hono();
 // Middleware de autenticación para todas las rutas
 usuariosRoutes.use('*', authMiddleware);

@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { profesorPermisoController } from '../controllers/profesorPermisoController.js';
+import { profesorPermisoController } from '../controllers/.js';
 export const profesorPermisoRoutes = new Hono();
 // Rutas para la gestión de permisos por el profesor
 profesorPermisoRoutes.route('/', profesorPermisoController);

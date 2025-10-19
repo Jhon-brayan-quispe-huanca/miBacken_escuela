@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
-import { PorteroController } from '../controllers/porteroController.js';
-import { authMiddleware } from '../middleware/authMiddleware.js';
+import { PorteroController } from '../controllers/apoderadoController.js';
+import { authMiddleware } from '../middleware/.js';
 
 const porteroRoutes = new Hono();
 

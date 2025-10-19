@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { AuthController } from '../controllers/authController.js';
+import { AuthController } from '../controllers/.js';
 const authRoutes = new Hono();
 // Ruta para login de otros usuarios (con email)
 authRoutes.post('/login/usuario', AuthController.loginUsuario);

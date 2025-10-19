@@ -1,5 +1,5 @@
 import { Context } from 'hono';
-import { carnetService } from '../services/carnetService';
+import { carnetService } from '../services/carnetService.js';
 
 export class CarnetController {
   /**

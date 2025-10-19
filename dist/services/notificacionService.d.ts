@@ -16,7 +16,37 @@ export declare class NotificacionService {
      */
     static crearNotificacion(data: NotificacionData): Promise<{
         success: boolean;
-        data: any;
+        data: {
+            estudiantes: {
+                id: number;
+                codigo_estudiante: string;
+                nombres: string;
+                apellidos: string;
+            } | null;
+            usuarios: {
+                id: number;
+                nombres: string;
+                apellidos: string;
+                email: string | null;
+            };
+        } & {
+            id: number;
+            created_at: Date | null;
+            updated_at: Date | null;
+            categoria: string | null;
+            prioridad: string | null;
+            leido: boolean | null;
+            usuario_id: number;
+            titulo: string;
+            mensaje: string;
+            tipo: string | null;
+            estudiante_id: number | null;
+            asistencia_id: number | null;
+            datos_adicionales: import("../../generated/prisma/runtime/library.js").JsonValue | null;
+            accion_requerida: string | null;
+            fecha_envio: Date | null;
+            fecha_leido: Date | null;
+        };
         message?: undefined;
     } | {
         success: boolean;
@@ -35,8 +65,37 @@ export declare class NotificacionService {
     }): Promise<{
         success: boolean;
         data: {
-            notificaciones: any;
-            total: any;
+            notificaciones: ({
+                estudiantes: {
+                    id: number;
+                    codigo_estudiante: string;
+                    nombres: string;
+                    apellidos: string;
+                } | null;
+                usuarios: {
+                    id: number;
+                    nombres: string;
+                    apellidos: string;
+                };
+            } & {
+                id: number;
+                created_at: Date | null;
+                updated_at: Date | null;
+                categoria: string | null;
+                prioridad: string | null;
+                leido: boolean | null;
+                usuario_id: number;
+                titulo: string;
+                mensaje: string;
+                tipo: string | null;
+                estudiante_id: number | null;
+                asistencia_id: number | null;
+                datos_adicionales: import("../../generated/prisma/runtime/library.js").JsonValue | null;
+                accion_requerida: string | null;
+                fecha_envio: Date | null;
+                fecha_leido: Date | null;
+            })[];
+            total: number;
             hasMore: boolean;
         };
         message?: undefined;
@@ -51,7 +110,7 @@ export declare class NotificacionService {
     static obtenerContadorNoLeidas(usuarioId: number): Promise<{
         success: boolean;
         data: {
-            contador: any;
+            contador: number;
         };
         message?: undefined;
     } | {
@@ -68,7 +127,24 @@ export declare class NotificacionService {
         data?: undefined;
     } | {
         success: boolean;
-        data: any;
+        data: {
+            id: number;
+            created_at: Date | null;
+            updated_at: Date | null;
+            categoria: string | null;
+            prioridad: string | null;
+            leido: boolean | null;
+            usuario_id: number;
+            titulo: string;
+            mensaje: string;
+            tipo: string | null;
+            estudiante_id: number | null;
+            asistencia_id: number | null;
+            datos_adicionales: import("../../generated/prisma/runtime/library.js").JsonValue | null;
+            accion_requerida: string | null;
+            fecha_envio: Date | null;
+            fecha_leido: Date | null;
+        };
         message?: undefined;
     }>;
     /**
@@ -87,7 +163,37 @@ export declare class NotificacionService {
         observaciones?: string;
     }): Promise<{
         success: boolean;
-        data: any;
+        data: {
+            estudiantes: {
+                id: number;
+                codigo_estudiante: string;
+                nombres: string;
+                apellidos: string;
+            } | null;
+            usuarios: {
+                id: number;
+                nombres: string;
+                apellidos: string;
+                email: string | null;
+            };
+        } & {
+            id: number;
+            created_at: Date | null;
+            updated_at: Date | null;
+            categoria: string | null;
+            prioridad: string | null;
+            leido: boolean | null;
+            usuario_id: number;
+            titulo: string;
+            mensaje: string;
+            tipo: string | null;
+            estudiante_id: number | null;
+            asistencia_id: number | null;
+            datos_adicionales: import("../../generated/prisma/runtime/library.js").JsonValue | null;
+            accion_requerida: string | null;
+            fecha_envio: Date | null;
+            fecha_leido: Date | null;
+        };
         message?: undefined;
     } | {
         success: boolean;
@@ -99,7 +205,37 @@ export declare class NotificacionService {
      */
     static crearNotificacionPermiso(solicitudId: number, tipo: 'solicitud' | 'aprobacion' | 'rechazo'): Promise<{
         success: boolean;
-        data: any;
+        data: {
+            estudiantes: {
+                id: number;
+                codigo_estudiante: string;
+                nombres: string;
+                apellidos: string;
+            } | null;
+            usuarios: {
+                id: number;
+                nombres: string;
+                apellidos: string;
+                email: string | null;
+            };
+        } & {
+            id: number;
+            created_at: Date | null;
+            updated_at: Date | null;
+            categoria: string | null;
+            prioridad: string | null;
+            leido: boolean | null;
+            usuario_id: number;
+            titulo: string;
+            mensaje: string;
+            tipo: string | null;
+            estudiante_id: number | null;
+            asistencia_id: number | null;
+            datos_adicionales: import("../../generated/prisma/runtime/library.js").JsonValue | null;
+            accion_requerida: string | null;
+            fecha_envio: Date | null;
+            fecha_leido: Date | null;
+        };
         message?: undefined;
     } | {
         success: boolean;

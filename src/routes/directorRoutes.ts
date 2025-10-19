@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
-import { DirectorController } from '../controllers/directorController.js';
-import { authMiddleware } from '../middleware/authMiddleware.js';
+import { DirectorController } from '../controllers/apoderadoController.js';
+import { authMiddleware } from '../middleware/.js';
 
 const directorRoutes = new Hono();
 

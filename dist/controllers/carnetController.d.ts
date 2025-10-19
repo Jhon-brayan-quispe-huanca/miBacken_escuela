@@ -23,7 +23,7 @@ export declare class CarnetController {
             seccion: string;
             turno: string;
         };
-    }, import("hono/utils/http-status").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
+    }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
         message: string;
     }, 500, "json">)>;
@@ -49,7 +49,7 @@ export declare class CarnetController {
             };
             qrCode: string;
         };
-    }, import("hono/utils/http-status").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
+    }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
         message: string;
     }, 500, "json">)>;

@@ -1,5 +1,5 @@
-import { PrismaClient } from '../../generated/prisma';
-import { getFechaActualPeru, getHoraActualPeru, getFechaHoraActualPeru, formatearFechaPeru, formatearHoraPeru, esHoyEnPeru, getInicioDiaPeru, getFinDiaPeru, getHoraActualPeruParaBD } from '../utils/dateUtils.js';
+import { PrismaClient } from '../../generated/prisma/index.js';
+import { getFechaActualPeru, getHoraActualPeru, getFechaHoraActualPeru, formatearFechaPeru, formatearHoraPeru, esHoyEnPeru, getInicioDiaPeru, getFinDiaPeru, getHoraActualPeruParaBD } from '../utils/.js';
 
 const prisma = new PrismaClient();
 

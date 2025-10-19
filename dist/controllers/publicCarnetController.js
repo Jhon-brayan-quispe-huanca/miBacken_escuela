@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../../generated/prisma/index.js';
 import { carnetService } from '../services/carnetService.js';
 const prisma = new PrismaClient();
 export const publicCarnetController = new Hono();

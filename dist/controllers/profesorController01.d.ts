@@ -5,7 +5,17 @@ import { Context } from 'hono';
  * desde su área en la aplicación Flutter
  */
 export declare class ProfesorController01 {
-    static marcarAsistenciaJustificadaAutomaticamente(estudianteId: number, profesorId: number, permiso: any): Promise<any>;
+    static marcarAsistenciaJustificadaAutomaticamente(estudianteId: number, profesorId: number, permiso: any): Promise<{
+        id: number;
+        estado: string | null;
+        created_at: Date | null;
+        updated_at: Date | null;
+        estudiante_id: number;
+        observaciones: string | null;
+        fecha: Date;
+        permiso_id: number | null;
+        profesor_id: number;
+    }>;
     /**
      * Obtener información del profesor por usuario ID
      * GET /profesor/:usuarioId
@@ -19,12 +29,18 @@ export declare class ProfesorController01 {
     }, 404, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
         data: {
-            id: any;
-            nombres: any;
-            apellidos: any;
-            email: any;
-            tipo_profesor: any;
-            asignaciones: any;
+            id: number;
+            nombres: string;
+            apellidos: string;
+            email: string | null;
+            tipo_profesor: string;
+            asignaciones: {
+                id: number;
+                grado: string;
+                seccion: string;
+                es_tutor: boolean | null;
+                anio_escolar: number;
+            }[];
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
@@ -42,10 +58,16 @@ export declare class ProfesorController01 {
     }, 404, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
         data: {
-            totalAsignaciones: any;
-            totalEstudiantes: any;
-            asistenciasHoy: any;
-            asignaciones: any;
+            totalAsignaciones: number;
+            totalEstudiantes: number;
+            asistenciasHoy: number;
+            asignaciones: {
+                id: number;
+                grado: string;
+                seccion: string;
+                esTutor: boolean | null;
+                anioEscolar: number;
+            }[];
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         message: string;
@@ -60,14 +82,14 @@ export declare class ProfesorController01 {
     }, 404, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
         data: {
-            id: any;
-            nombres: any;
-            apellidos: any;
-            email: any;
-            dni: any;
-            telefono: any;
-            especialidad: any;
-            fechaIngreso: any;
+            id: number;
+            nombres: string;
+            apellidos: string;
+            email: string | null;
+            dni: string | null;
+            telefono: string | null;
+            especialidad: string | null;
+            fechaIngreso: string | null;
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         message: string;
@@ -94,7 +116,16 @@ export declare class ProfesorController01 {
         message: string;
     }, 404, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
-        data: any;
+        data: {
+            id: number;
+            grado: string;
+            seccion: string;
+            gradoId: number;
+            seccionId: number;
+            esTutor: boolean | null;
+            anioEscolar: number;
+            activo: boolean | null;
+        }[];
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         message: string;
     }, 500, "json">)>;
@@ -107,7 +138,30 @@ export declare class ProfesorController01 {
         message: string;
     }, 404, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
-        data: any[];
+        data: {
+            id: number;
+            nombres: string;
+            apellidos: string;
+            dni: string | null;
+            tiene_permiso_activo: boolean;
+            asistenciaHoy: {
+                id: number;
+                estado: string | null;
+                created_at: string | null;
+                updated_at: string | null;
+                estudiante_id: number;
+                observaciones: string | null;
+                fecha: string;
+                permiso_id: number | null;
+                profesor_id: number;
+            } | null;
+            permisos: {
+                id: number;
+                motivo: string;
+                fecha_inicio: string;
+                fecha_fin: string | null;
+            }[];
+        }[];
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         message: string;
     }, 500, "json">)>;
@@ -133,7 +187,16 @@ export declare class ProfesorController01 {
         message: string;
     }, 404, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
-        data: any;
+        data: {
+            id: number;
+            grado_id: number;
+            seccion_id: number;
+            grado_nombre: string;
+            grado_nivel: string;
+            seccion_nombre: string;
+            display_name: string;
+            anio_escolar: number;
+        }[];
         message: string;
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         message: string;
@@ -147,7 +210,25 @@ export declare class ProfesorController01 {
         message: string;
     }, 404, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
-        data: any;
+        data: {
+            id: any;
+            estudiante_id: number;
+            profesor_id: number;
+            materia_id: number;
+            fecha: string;
+            estado: any;
+            observaciones: any;
+            estudiante: {
+                id: number;
+                nombres: string;
+                apellidos: string;
+                dni: string | null;
+                nombreCompleto: string;
+            };
+            materia: null;
+            grado: string;
+            seccion: string;
+        }[];
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         message: string;
     }, 500, "json">)>;
@@ -160,7 +241,17 @@ export declare class ProfesorController01 {
         message: string;
     }, 404, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
-        data: any[];
+        data: {
+            asignacionId: number;
+            grado: string;
+            seccion: string;
+            esTutor: boolean | null;
+            anioEscolar: number;
+            totalEstudiantes: number;
+            totalAsistencias: number;
+            asistenciasPresentes: number;
+            porcentajeAsistencia: number;
+        }[];
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         message: string;
     }, 500, "json">)>;
@@ -175,14 +266,14 @@ export declare class ProfesorController01 {
         success: true;
         message: string;
         data: {
-            id: any;
-            fecha: any;
-            estado: any;
-            observaciones: any;
+            id: number;
+            fecha: string;
+            estado: string | null;
+            observaciones: string | null;
             estudiante: {
-                nombres: any;
-                apellidos: any;
-                dni: any;
+                nombres: string;
+                apellidos: string;
+                dni: string | null;
             };
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
@@ -202,11 +293,16 @@ export declare class ProfesorController01 {
         success: true;
         data: {
             resumenHoy: {
-                asistenciasRegistradas: any;
-                estudiantesAusentes: any;
-                permisosPendientes: any;
+                asistenciasRegistradas: number;
+                estudiantesAusentes: number;
+                permisosPendientes: number;
             };
-            estadisticasPorAsignacion: any[];
+            estadisticasPorAsignacion: {
+                grado: string;
+                seccion: string;
+                estudiantes: number;
+                asistenciaPromedio: number;
+            }[];
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;

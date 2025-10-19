@@ -11,11 +11,11 @@ export declare const permisoService: {
      * Obtener estadísticas de permisos para un apoderado
      */
     obtenerEstadisticasPermisos(apoderadoId: number): Promise<{
-        total: any;
-        pendientes: any;
-        aprobadas: any;
-        rechazadas: any;
-        canceladas: any;
+        total: number;
+        pendientes: number;
+        aprobadas: number;
+        rechazadas: number;
+        canceladas: number;
     }>;
     /**
      * Validar si un estudiante puede solicitar permiso para una fecha específica
@@ -28,6 +28,16 @@ export declare const permisoService: {
     /**
      * Obtener permisos próximos (próximos 7 días)
      */
-    obtenerPermisosProximos(apoderadoId: number): Promise<any>;
+    obtenerPermisosProximos(apoderadoId: number): Promise<{
+        id: number;
+        estudiante: {
+            nombres: string;
+            apellidos: string;
+        };
+        fecha_permiso_inicio: Date;
+        fecha_permiso_fin: Date | null;
+        motivo: string;
+        estado: string | null;
+    }[]>;
 };
 //# sourceMappingURL=permisoService.d.ts.map

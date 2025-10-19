@@ -1,6 +1,6 @@
 import { Context, Next } from 'hono';
 import jwt from 'jsonwebtoken';
-import { PrismaClient } from '../../generated/prisma';
+import { PrismaClient } from '../../generated/prisma/index.js';
 
 const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET || 'mariano_nunez_secret_key_2024_sistema_asistencia';

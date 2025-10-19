@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-import { CarnetMasivoService } from '../services/carnetMasivoService.js';
+import { PrismaClient } from '../../generated/prisma/index.js';
+import { CarnetMasivoService } from '../services/carnetService.js';
 const prisma = new PrismaClient();
 export class CarnetMasivoController {
     /**

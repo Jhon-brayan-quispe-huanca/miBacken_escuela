@@ -1,4 +1,4 @@
-import { carnetService } from '../services/carnetService';
+import { carnetService } from '../services/carnetService.js';
 export class CarnetController {
     /**
      * Generar carnet de estudiante en PDF

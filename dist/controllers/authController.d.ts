@@ -20,7 +20,7 @@ export declare class AuthController {
                 rol: any;
             };
         };
-    }, import("hono/utils/http-status").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
+    }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
         message: string;
     }, 500, "json">)>;
@@ -35,6 +35,6 @@ export declare class AuthController {
             email: any;
             dni: any;
         };
-    }, import("hono/utils/http-status").ContentfulStatusCode, "json">)>;
+    }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">)>;
 }
 //# sourceMappingURL=authController.d.ts.map
