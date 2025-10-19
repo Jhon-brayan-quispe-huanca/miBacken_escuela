@@ -21,6 +21,7 @@ import { profesorPermisoRoutes } from './routes/profesorPermisoRoutes.js'
 import { directorCarnetRoutes } from './routes/directorCarnetRoutes.js'
 import { debugRoutes } from './routes/debugRoutes.js'
 import { publicCarnetRoutes } from './routes/publicCarnetRoutes.js'
+import publicRoutes from './routes/publicRoutes.js'
 import uploadController from './controllers/uploadController.js'
 import notificacionController from './controllers/notificacionController.js'
 import { SchedulerService } from './services/scheduler.js'
@@ -105,6 +106,9 @@ app.route('/api/director', directorAsistenciaRoutes)
 
 // Rutas públicas para imágenes de carnets (SIN AUTENTICACIÓN)
 app.route('/api/public/carnets', publicCarnetRoutes)
+
+// Rutas públicas (SIN AUTENTICACIÓN)
+app.route('/api/public', publicRoutes)
 
 // Rutas de subida de archivos
 app.route('/api/upload', uploadController)
