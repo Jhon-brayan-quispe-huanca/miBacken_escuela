@@ -24,8 +24,6 @@ import { publicCarnetRoutes } from './routes/publicCarnetRoutes.js'
 import publicRoutes from './routes/publicRoutes.js'
 import uploadController from './controllers/uploadController.js'
 import notificacionController from './controllers/notificacionController.js'
-import { SchedulerService } from './services/scheduler.js'
-import { AsistenciaService, DatosQREstudiante } from './services/asistenciaService.js'
 
 // Inicializar Prisma Client
 const prisma = new PrismaClient()
