@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import NotificacionService from '../services/carnetService.js';
+import NotificacionService from '../services/notificacionService.js';
 const notificacionController = new Hono();
 /**
  * GET /api/notificaciones/:usuario_id

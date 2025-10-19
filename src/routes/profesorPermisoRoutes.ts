@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { profesorPermisoController } from '../controllers/apoderadoController.js';
+import { profesorPermisoController } from '../controllers/profesorPermisoController.js';
 
 export const profesorPermisoRoutes = new Hono();
 

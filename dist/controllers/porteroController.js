@@ -1,6 +1,6 @@
 import { PrismaClient } from '../../generated/prisma/index.js';
-import { AsistenciaService } from '../services/carnetService.js';
-import NotificacionService from '../services/carnetService.js';
+import { AsistenciaService } from '../services/asistenciaService.js';
+import NotificacionService from '../services/notificacionService.js';
 const prisma = new PrismaClient();
 export class PorteroController {
     // Marcar asistencia como justificada automáticamente por permiso activo

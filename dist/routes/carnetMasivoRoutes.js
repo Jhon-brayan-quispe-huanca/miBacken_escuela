@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
-import { CarnetMasivoController } from '../controllers/.js';
-import { authMiddleware } from '../middleware/.js';
+import { CarnetMasivoController } from '../controllers/carnetMasivoController.js';
+import { authMiddleware } from '../middleware/authMiddleware.js';
 const carnetMasivoRoutes = new Hono();
 // Aplicar middleware de autenticación a todas las rutas
 carnetMasivoRoutes.use('*', authMiddleware);

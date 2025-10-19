@@ -7,12 +7,12 @@ import { Context } from 'hono';
 export declare class ProfesorController01 {
     static marcarAsistenciaJustificadaAutomaticamente(estudianteId: number, profesorId: number, permiso: any): Promise<{
         id: number;
-        estado: string | null;
         created_at: Date | null;
         updated_at: Date | null;
+        estado: string | null;
+        fecha: Date;
         estudiante_id: number;
         observaciones: string | null;
-        fecha: Date;
         permiso_id: number | null;
         profesor_id: number;
     }>;
@@ -146,12 +146,12 @@ export declare class ProfesorController01 {
             tiene_permiso_activo: boolean;
             asistenciaHoy: {
                 id: number;
-                estado: string | null;
                 created_at: string | null;
                 updated_at: string | null;
+                estado: string | null;
+                fecha: string;
                 estudiante_id: number;
                 observaciones: string | null;
-                fecha: string;
                 permiso_id: number | null;
                 profesor_id: number;
             } | null;

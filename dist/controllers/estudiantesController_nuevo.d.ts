@@ -9,16 +9,16 @@ export declare class EstudiantesController {
             estudiantes: {
                 apoderados: {
                     usuarios: {
+                        email: string | null;
                         nombres: string;
                         apellidos: string;
-                        email: string | null;
                         telefono: string | null;
                     };
                     id: number;
+                    direccion: string | null;
                     created_at: string | null;
                     updated_at: string | null;
                     usuario_id: number;
-                    direccion: string | null;
                 };
                 grados: {
                     id: number;
@@ -31,17 +31,17 @@ export declare class EstudiantesController {
                 };
                 id: number;
                 dni: string | null;
-                codigo_estudiante: string;
-                apoderado_id: number;
-                grado_id: number;
-                seccion_id: number;
                 nombres: string;
                 apellidos: string;
                 genero: string | null;
-                estado: string | null;
-                turno: string;
                 created_at: string | null;
                 updated_at: string | null;
+                estado: string | null;
+                apoderado_id: number;
+                grado_id: number;
+                seccion_id: number;
+                codigo_estudiante: string;
+                turno: string;
             }[];
             pagination: {
                 page: number;
@@ -68,16 +68,16 @@ export declare class EstudiantesController {
         data: {
             apoderados: {
                 usuarios: {
+                    email: string | null;
                     nombres: string;
                     apellidos: string;
-                    email: string | null;
                     telefono: string | null;
                 };
                 id: number;
+                direccion: string | null;
                 created_at: string | null;
                 updated_at: string | null;
                 usuario_id: number;
-                direccion: string | null;
             };
             grados: {
                 id: number;
@@ -90,17 +90,17 @@ export declare class EstudiantesController {
             };
             id: number;
             dni: string | null;
-            codigo_estudiante: string;
-            apoderado_id: number;
-            grado_id: number;
-            seccion_id: number;
             nombres: string;
             apellidos: string;
             genero: string | null;
-            estado: string | null;
-            turno: string;
             created_at: string | null;
             updated_at: string | null;
+            estado: string | null;
+            apoderado_id: number;
+            grado_id: number;
+            seccion_id: number;
+            codigo_estudiante: string;
+            turno: string;
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
@@ -118,16 +118,16 @@ export declare class EstudiantesController {
         data: {
             apoderados: {
                 usuarios: {
+                    email: string | null;
                     nombres: string;
                     apellidos: string;
-                    email: string | null;
                     telefono: string | null;
                 };
                 id: number;
+                direccion: string | null;
                 created_at: string | null;
                 updated_at: string | null;
                 usuario_id: number;
-                direccion: string | null;
             };
             grados: {
                 id: number;
@@ -140,17 +140,17 @@ export declare class EstudiantesController {
             };
             id: number;
             dni: string | null;
-            codigo_estudiante: string;
-            apoderado_id: number;
-            grado_id: number;
-            seccion_id: number;
             nombres: string;
             apellidos: string;
             genero: string | null;
-            estado: string | null;
-            turno: string;
             created_at: string | null;
             updated_at: string | null;
+            estado: string | null;
+            apoderado_id: number;
+            grado_id: number;
+            seccion_id: number;
+            codigo_estudiante: string;
+            turno: string;
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
@@ -171,16 +171,16 @@ export declare class EstudiantesController {
         data: {
             apoderados: {
                 usuarios: {
+                    email: string | null;
                     nombres: string;
                     apellidos: string;
-                    email: string | null;
                     telefono: string | null;
                 };
                 id: number;
+                direccion: string | null;
                 created_at: string | null;
                 updated_at: string | null;
                 usuario_id: number;
-                direccion: string | null;
             };
             grados: {
                 id: number;
@@ -193,17 +193,17 @@ export declare class EstudiantesController {
             };
             id: number;
             dni: string | null;
-            codigo_estudiante: string;
-            apoderado_id: number;
-            grado_id: number;
-            seccion_id: number;
             nombres: string;
             apellidos: string;
             genero: string | null;
-            estado: string | null;
-            turno: string;
             created_at: string | null;
             updated_at: string | null;
+            estado: string | null;
+            apoderado_id: number;
+            grado_id: number;
+            seccion_id: number;
+            codigo_estudiante: string;
+            turno: string;
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
@@ -221,17 +221,17 @@ export declare class EstudiantesController {
         data: {
             id: number;
             dni: string | null;
-            codigo_estudiante: string;
-            apoderado_id: number;
-            grado_id: number;
-            seccion_id: number;
             nombres: string;
             apellidos: string;
             genero: string | null;
-            estado: string | null;
-            turno: string;
             created_at: string | null;
             updated_at: string | null;
+            estado: string | null;
+            apoderado_id: number;
+            grado_id: number;
+            seccion_id: number;
+            codigo_estudiante: string;
+            turno: string;
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
@@ -261,16 +261,16 @@ export declare class EstudiantesController {
         data: {
             grados: {
                 id: number;
+                nombre: string;
                 created_at: string | null;
                 updated_at: string | null;
-                nombre: string;
                 nivel: string;
             }[];
             secciones: {
                 id: number;
+                nombre: string;
                 created_at: string | null;
                 updated_at: string | null;
-                nombre: string;
             }[];
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
@@ -284,16 +284,16 @@ export declare class EstudiantesController {
         success: true;
         data: {
             usuarios: {
+                email: string | null;
                 nombres: string;
                 apellidos: string;
-                email: string | null;
                 telefono: string | null;
             };
             id: number;
+            direccion: string | null;
             created_at: string | null;
             updated_at: string | null;
             usuario_id: number;
-            direccion: string | null;
         }[];
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;

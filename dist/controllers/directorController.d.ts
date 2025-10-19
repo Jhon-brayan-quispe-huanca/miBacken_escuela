@@ -66,6 +66,21 @@ export declare class DirectorController {
     }, 403, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
         asignaciones: {
+            profesores: {
+                usuarios: {
+                    email: string | null;
+                    nombres: string;
+                    apellidos: string;
+                };
+                id: number;
+                created_at: string | null;
+                updated_at: string | null;
+                especialidad: string | null;
+                usuario_id: number;
+                fecha_ingreso: string | null;
+                codigo_profesor: string | null;
+                tipo_profesor: string;
+            };
             grados: {
                 id: number;
                 nombre: string;
@@ -75,27 +90,12 @@ export declare class DirectorController {
                 id: number;
                 nombre: string;
             };
-            profesores: {
-                usuarios: {
-                    nombres: string;
-                    apellidos: string;
-                    email: string | null;
-                };
-                id: number;
-                created_at: string | null;
-                updated_at: string | null;
-                usuario_id: number;
-                especialidad: string | null;
-                fecha_ingreso: string | null;
-                codigo_profesor: string | null;
-                tipo_profesor: string;
-            };
             id: number;
-            grado_id: number;
-            seccion_id: number;
+            activo: boolean | null;
             created_at: string | null;
             updated_at: string | null;
-            activo: boolean | null;
+            grado_id: number;
+            seccion_id: number;
             profesor_id: number;
             es_tutor: boolean | null;
             anio_escolar: number;
@@ -113,6 +113,21 @@ export declare class DirectorController {
         success: true;
         message: string;
         asignacion: {
+            profesores: {
+                usuarios: {
+                    email: string | null;
+                    nombres: string;
+                    apellidos: string;
+                };
+                id: number;
+                created_at: string | null;
+                updated_at: string | null;
+                especialidad: string | null;
+                usuario_id: number;
+                fecha_ingreso: string | null;
+                codigo_profesor: string | null;
+                tipo_profesor: string;
+            };
             grados: {
                 id: number;
                 nombre: string;
@@ -122,27 +137,12 @@ export declare class DirectorController {
                 id: number;
                 nombre: string;
             };
-            profesores: {
-                usuarios: {
-                    nombres: string;
-                    apellidos: string;
-                    email: string | null;
-                };
-                id: number;
-                created_at: string | null;
-                updated_at: string | null;
-                usuario_id: number;
-                especialidad: string | null;
-                fecha_ingreso: string | null;
-                codigo_profesor: string | null;
-                tipo_profesor: string;
-            };
             id: number;
-            grado_id: number;
-            seccion_id: number;
+            activo: boolean | null;
             created_at: string | null;
             updated_at: string | null;
-            activo: boolean | null;
+            grado_id: number;
+            seccion_id: number;
             profesor_id: number;
             es_tutor: boolean | null;
             anio_escolar: number;
@@ -160,6 +160,21 @@ export declare class DirectorController {
         success: true;
         message: string;
         asignacion: {
+            profesores: {
+                usuarios: {
+                    email: string | null;
+                    nombres: string;
+                    apellidos: string;
+                };
+                id: number;
+                created_at: string | null;
+                updated_at: string | null;
+                especialidad: string | null;
+                usuario_id: number;
+                fecha_ingreso: string | null;
+                codigo_profesor: string | null;
+                tipo_profesor: string;
+            };
             grados: {
                 id: number;
                 nombre: string;
@@ -169,27 +184,12 @@ export declare class DirectorController {
                 id: number;
                 nombre: string;
             };
-            profesores: {
-                usuarios: {
-                    nombres: string;
-                    apellidos: string;
-                    email: string | null;
-                };
-                id: number;
-                created_at: string | null;
-                updated_at: string | null;
-                usuario_id: number;
-                especialidad: string | null;
-                fecha_ingreso: string | null;
-                codigo_profesor: string | null;
-                tipo_profesor: string;
-            };
             id: number;
-            grado_id: number;
-            seccion_id: number;
+            activo: boolean | null;
             created_at: string | null;
             updated_at: string | null;
-            activo: boolean | null;
+            grado_id: number;
+            seccion_id: number;
             profesor_id: number;
             es_tutor: boolean | null;
             anio_escolar: number;
@@ -244,17 +244,17 @@ export declare class DirectorController {
         success: true;
         profesores: {
             usuarios: {
+                email: string | null;
                 id: number;
                 nombres: string;
                 apellidos: string;
                 activo: boolean | null;
-                email: string | null;
             };
             id: number;
             created_at: string | null;
             updated_at: string | null;
-            usuario_id: number;
             especialidad: string | null;
+            usuario_id: number;
             fecha_ingreso: string | null;
             codigo_profesor: string | null;
             tipo_profesor: string;

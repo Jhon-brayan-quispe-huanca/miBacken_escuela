@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { directorCarnetController } from '../controllers/apoderadoController.js';
+import { directorCarnetController } from '../controllers/directorCarnetController.js';
 
 export const directorCarnetRoutes = new Hono();
 

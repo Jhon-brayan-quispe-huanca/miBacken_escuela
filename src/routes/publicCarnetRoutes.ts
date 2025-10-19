@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { publicCarnetController } from '../controllers/apoderadoController.js';
+import { publicCarnetController } from '../controllers/publicCarnetController.js';
 
 export const publicCarnetRoutes = new Hono();
 

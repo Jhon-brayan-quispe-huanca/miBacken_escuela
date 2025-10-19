@@ -25,7 +25,6 @@ export declare class PorteroController {
     static obtenerDashboard(c: Context): Promise<(Response & import("hono").TypedResponse<{
         message: string;
     }, 403, "json">) | (Response & import("hono").TypedResponse<{
-        [x: string]: any;
         success: true;
         estadisticas: {
             estudiantesHoy: number;
@@ -41,20 +40,64 @@ export declare class PorteroController {
             asistenciasAyer: number;
             presentesAyer: number;
         };
+        asistencias: {
+            id: string | number;
+            fecha: string;
+            hora: string;
+            estado: "entrada" | "salida";
+            estado_asistencia: "Presente" | "Tarde" | "Ausente" | "Justificado";
+            es_tardanza: boolean;
+            estudiante: {
+                id: number;
+                codigo_estudiante: string;
+                nombres: string;
+                apellidos: string;
+                grado: string;
+                seccion: string;
+                turno: string;
+            };
+        }[];
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         message: string;
     }, 500, "json">)>;
     static procesarEscaneoQR(c: Context): Promise<(Response & import("hono").TypedResponse<{
         message: string;
-    }, 403, "json">) | (Response & import("hono").TypedResponse<any, 200 | 400, "json">) | (Response & import("hono").TypedResponse<{
+    }, 403, "json">) | (Response & import("hono").TypedResponse<{
+        success: false;
+        message: string;
+    }, 400, "json">) | (Response & import("hono").TypedResponse<{
+        success: boolean;
+        message: string;
+        tipo: "entrada" | "salida";
+        estado: "Presente" | "Tarde" | "Ausente";
+        hora: string;
+        estudiante?: any;
+        asistencia?: any;
+    }, 400 | 200, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
         message: string;
     }, 500, "json">)>;
     static obtenerAsistenciasHoy(c: Context): Promise<(Response & import("hono").TypedResponse<{
         message: string;
     }, 403, "json">) | (Response & import("hono").TypedResponse<{
-        [x: string]: any;
         success: true;
+        asistencias: {
+            id: string | number;
+            fecha: string;
+            hora: string;
+            estado: "entrada" | "salida";
+            estado_asistencia: "Presente" | "Tarde" | "Ausente" | "Justificado";
+            es_tardanza: boolean;
+            estudiante: {
+                id: number;
+                codigo_estudiante: string;
+                nombres: string;
+                apellidos: string;
+                grado: string;
+                seccion: string;
+                turno: string;
+            };
+        }[];
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         message: string;
     }, 500, "json">)>;
@@ -63,9 +106,25 @@ export declare class PorteroController {
     }, 403, "json">) | (Response & import("hono").TypedResponse<{
         message: string;
     }, 400, "json">) | (Response & import("hono").TypedResponse<{
-        [x: string]: any;
         success: true;
         fecha: string;
+        asistencias: {
+            id: string | number;
+            fecha: string;
+            hora: string;
+            estado: "entrada" | "salida";
+            estado_asistencia: "Presente" | "Tarde" | "Ausente" | "Justificado";
+            es_tardanza: boolean;
+            estudiante: {
+                id: number;
+                codigo_estudiante: string;
+                nombres: string;
+                apellidos: string;
+                grado: string;
+                seccion: string;
+                turno: string;
+            };
+        }[];
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         message: string;
     }, 500, "json">)>;
@@ -75,8 +134,24 @@ export declare class PorteroController {
         success: false;
         message: string;
     }, 400, "json">) | (Response & import("hono").TypedResponse<{
-        [x: string]: any;
         success: true;
+        historial: {
+            id: string | number;
+            fecha: string;
+            hora: string;
+            estado: "entrada" | "salida";
+            estado_asistencia: "Presente" | "Tarde" | "Ausente" | "Justificado";
+            es_tardanza: boolean;
+            estudiante: {
+                id: number;
+                codigo_estudiante: string;
+                nombres: string;
+                apellidos: string;
+                grado: string;
+                seccion: string;
+                turno: string;
+            };
+        }[];
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         message: string;
     }, 500, "json">)>;
@@ -86,8 +161,24 @@ export declare class PorteroController {
         success: false;
         message: string;
     }, 400, "json">) | (Response & import("hono").TypedResponse<{
-        [x: string]: any;
         success: true;
+        historial: {
+            id: string | number;
+            fecha: string;
+            hora: string;
+            estado: "entrada" | "salida";
+            estado_asistencia: "Presente" | "Tarde" | "Ausente" | "Justificado";
+            es_tardanza: boolean;
+            estudiante: {
+                id: number;
+                codigo_estudiante: string;
+                nombres: string;
+                apellidos: string;
+                grado: string;
+                seccion: string;
+                turno: string;
+            };
+        }[];
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         message: string;
     }, 500, "json">)>;
@@ -132,15 +223,15 @@ export declare class PorteroController {
             tienePermisoActivo: boolean;
             asistenciaHoy: {
                 id: number;
-                estado: string | null;
                 created_at: string | null;
                 updated_at: string | null;
-                estudiante_id: number;
-                observaciones: string | null;
-                usuario_portero_id: number;
+                estado: string | null;
                 fecha: string;
+                estudiante_id: number;
+                usuario_portero_id: number;
                 hora_entrada: string | null;
                 hora_salida: string | null;
+                observaciones: string | null;
                 permiso_id: number | null;
             } | null;
             permisos: {
@@ -165,15 +256,15 @@ export declare class PorteroController {
         message: string;
         asistencia: {
             id: number;
-            estado: string | null;
             created_at: string | null;
             updated_at: string | null;
-            estudiante_id: number;
-            observaciones: string | null;
-            usuario_portero_id: number;
+            estado: string | null;
             fecha: string;
+            estudiante_id: number;
+            usuario_portero_id: number;
             hora_entrada: string | null;
             hora_salida: string | null;
+            observaciones: string | null;
             permiso_id: number | null;
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
@@ -190,7 +281,10 @@ export declare class PorteroController {
         success: true;
         message: string;
         data: {
-            [x: string]: any;
+            ausenciasMarcadas: number;
+            estudiantesProcesados: number;
+            estudiantesConAsistencia: number;
+            detalle: string;
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
         success: false;

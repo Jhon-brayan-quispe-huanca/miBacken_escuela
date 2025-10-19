@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
-import { EstudiantesController } from '../controllers/apoderadoController.js';
-import { authMiddleware } from '../middleware/.js';
+import { EstudiantesController } from '../controllers/estudiantesController.js';
+import { authMiddleware } from '../middleware/authMiddleware.js';
 
 const estudiantesRoutes = new Hono();
 

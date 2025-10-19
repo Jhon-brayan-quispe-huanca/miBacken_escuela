@@ -5,6 +5,18 @@ export declare class ProfesoresController {
     }, 403, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
         data: {
+            usuarios: {
+                email: string | null;
+                id: number;
+                dni: string | null;
+                nombres: string;
+                apellidos: string;
+                telefono: string | null;
+                direccion: string | null;
+                fecha_nacimiento: string | null;
+                genero: string | null;
+                activo: boolean | null;
+            };
             profesor_grado_seccion: {
                 grados: {
                     nombre: string;
@@ -14,32 +26,20 @@ export declare class ProfesoresController {
                     nombre: string;
                 };
                 id: number;
-                grado_id: number;
-                seccion_id: number;
+                activo: boolean | null;
                 created_at: string | null;
                 updated_at: string | null;
-                activo: boolean | null;
+                grado_id: number;
+                seccion_id: number;
                 profesor_id: number;
                 es_tutor: boolean | null;
                 anio_escolar: number;
             }[];
-            usuarios: {
-                id: number;
-                dni: string | null;
-                nombres: string;
-                apellidos: string;
-                genero: string | null;
-                activo: boolean | null;
-                direccion: string | null;
-                email: string | null;
-                telefono: string | null;
-                fecha_nacimiento: string | null;
-            };
             id: number;
             created_at: string | null;
             updated_at: string | null;
-            usuario_id: number;
             especialidad: string | null;
+            usuario_id: number;
             fecha_ingreso: string | null;
             codigo_profesor: string | null;
             tipo_profesor: string;
@@ -60,47 +60,47 @@ export declare class ProfesoresController {
     }, 404, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
         data: {
-            profesor_grado_seccion: {
-                grados: {
-                    id: number;
-                    created_at: string | null;
-                    updated_at: string | null;
-                    nombre: string;
-                    nivel: string;
-                };
-                secciones: {
-                    id: number;
-                    created_at: string | null;
-                    updated_at: string | null;
-                    nombre: string;
-                };
-                id: number;
-                grado_id: number;
-                seccion_id: number;
-                created_at: string | null;
-                updated_at: string | null;
-                activo: boolean | null;
-                profesor_id: number;
-                es_tutor: boolean | null;
-                anio_escolar: number;
-            }[];
             usuarios: {
+                email: string | null;
                 id: number;
                 dni: string | null;
                 nombres: string;
                 apellidos: string;
+                telefono: string | null;
+                direccion: string | null;
+                fecha_nacimiento: string | null;
                 genero: string | null;
                 activo: boolean | null;
-                direccion: string | null;
-                email: string | null;
-                telefono: string | null;
-                fecha_nacimiento: string | null;
             };
+            profesor_grado_seccion: {
+                grados: {
+                    id: number;
+                    nombre: string;
+                    created_at: string | null;
+                    updated_at: string | null;
+                    nivel: string;
+                };
+                secciones: {
+                    id: number;
+                    nombre: string;
+                    created_at: string | null;
+                    updated_at: string | null;
+                };
+                id: number;
+                activo: boolean | null;
+                created_at: string | null;
+                updated_at: string | null;
+                grado_id: number;
+                seccion_id: number;
+                profesor_id: number;
+                es_tutor: boolean | null;
+                anio_escolar: number;
+            }[];
             id: number;
             created_at: string | null;
             updated_at: string | null;
-            usuario_id: number;
             especialidad: string | null;
+            usuario_id: number;
             fecha_ingreso: string | null;
             codigo_profesor: string | null;
             tipo_profesor: string;
@@ -117,22 +117,22 @@ export declare class ProfesoresController {
         message: string;
         data: {
             usuarios: {
+                email: string | null;
                 id: number;
                 dni: string | null;
                 nombres: string;
                 apellidos: string;
+                telefono: string | null;
+                direccion: string | null;
+                fecha_nacimiento: string | null;
                 genero: string | null;
                 activo: boolean | null;
-                direccion: string | null;
-                email: string | null;
-                telefono: string | null;
-                fecha_nacimiento: string | null;
             };
             id: number;
             created_at: string | null;
             updated_at: string | null;
-            usuario_id: number;
             especialidad: string | null;
+            usuario_id: number;
             fecha_ingreso: string | null;
             codigo_profesor: string | null;
             tipo_profesor: string;
@@ -152,22 +152,22 @@ export declare class ProfesoresController {
         message: string;
         data: {
             usuarios: {
+                email: string | null;
                 id: number;
                 dni: string | null;
                 nombres: string;
                 apellidos: string;
+                telefono: string | null;
+                direccion: string | null;
+                fecha_nacimiento: string | null;
                 genero: string | null;
                 activo: boolean | null;
-                direccion: string | null;
-                email: string | null;
-                telefono: string | null;
-                fecha_nacimiento: string | null;
             };
             id: number;
             created_at: string | null;
             updated_at: string | null;
-            usuario_id: number;
             especialidad: string | null;
+            usuario_id: number;
             fecha_ingreso: string | null;
             codigo_profesor: string | null;
             tipo_profesor: string;
@@ -182,22 +182,22 @@ export declare class ProfesoresController {
         message: string;
         data: {
             usuarios: {
+                email: string | null;
                 id: number;
                 dni: string | null;
                 nombres: string;
                 apellidos: string;
+                telefono: string | null;
+                direccion: string | null;
+                fecha_nacimiento: string | null;
                 genero: string | null;
                 activo: boolean | null;
-                direccion: string | null;
-                email: string | null;
-                telefono: string | null;
-                fecha_nacimiento: string | null;
             };
             id: number;
             created_at: string | null;
             updated_at: string | null;
-            usuario_id: number;
             especialidad: string | null;
+            usuario_id: number;
             fecha_ingreso: string | null;
             codigo_profesor: string | null;
             tipo_profesor: string;
@@ -225,19 +225,6 @@ export declare class ProfesoresController {
         success: true;
         message: string;
         data: {
-            grados: {
-                id: number;
-                created_at: string | null;
-                updated_at: string | null;
-                nombre: string;
-                nivel: string;
-            };
-            secciones: {
-                id: number;
-                created_at: string | null;
-                updated_at: string | null;
-                nombre: string;
-            };
             profesores: {
                 usuarios: {
                     nombres: string;
@@ -246,18 +233,31 @@ export declare class ProfesoresController {
                 id: number;
                 created_at: string | null;
                 updated_at: string | null;
-                usuario_id: number;
                 especialidad: string | null;
+                usuario_id: number;
                 fecha_ingreso: string | null;
                 codigo_profesor: string | null;
                 tipo_profesor: string;
             };
+            grados: {
+                id: number;
+                nombre: string;
+                created_at: string | null;
+                updated_at: string | null;
+                nivel: string;
+            };
+            secciones: {
+                id: number;
+                nombre: string;
+                created_at: string | null;
+                updated_at: string | null;
+            };
             id: number;
-            grado_id: number;
-            seccion_id: number;
+            activo: boolean | null;
             created_at: string | null;
             updated_at: string | null;
-            activo: boolean | null;
+            grado_id: number;
+            seccion_id: number;
             profesor_id: number;
             es_tutor: boolean | null;
             anio_escolar: number;
@@ -278,6 +278,18 @@ export declare class ProfesoresController {
     }, 403, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
         data: {
+            usuarios: {
+                email: string | null;
+                id: number;
+                dni: string | null;
+                nombres: string;
+                apellidos: string;
+                telefono: string | null;
+                direccion: string | null;
+                fecha_nacimiento: string | null;
+                genero: string | null;
+                activo: boolean | null;
+            };
             profesor_grado_seccion: {
                 grados: {
                     nombre: string;
@@ -287,32 +299,20 @@ export declare class ProfesoresController {
                     nombre: string;
                 };
                 id: number;
-                grado_id: number;
-                seccion_id: number;
+                activo: boolean | null;
                 created_at: string | null;
                 updated_at: string | null;
-                activo: boolean | null;
+                grado_id: number;
+                seccion_id: number;
                 profesor_id: number;
                 es_tutor: boolean | null;
                 anio_escolar: number;
             }[];
-            usuarios: {
-                id: number;
-                dni: string | null;
-                nombres: string;
-                apellidos: string;
-                genero: string | null;
-                activo: boolean | null;
-                direccion: string | null;
-                email: string | null;
-                telefono: string | null;
-                fecha_nacimiento: string | null;
-            };
             id: number;
             created_at: string | null;
             updated_at: string | null;
-            usuario_id: number;
             especialidad: string | null;
+            usuario_id: number;
             fecha_ingreso: string | null;
             codigo_profesor: string | null;
             tipo_profesor: string;

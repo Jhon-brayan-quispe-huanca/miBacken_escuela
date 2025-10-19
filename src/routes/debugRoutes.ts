@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { debugController } from '../controllers/apoderadoController.js';
+import { debugController } from '../controllers/debugController.js';
 
 export const debugRoutes = new Hono();
 

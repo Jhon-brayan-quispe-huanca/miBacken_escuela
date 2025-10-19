@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
-import { PorteroController } from '../controllers/.js';
-import { authMiddleware } from '../middleware/.js';
+import { PorteroController } from '../controllers/porteroController.js';
+import { authMiddleware } from '../middleware/authMiddleware.js';
 const porteroRoutes = new Hono();
 // Aplicar middleware de autenticación a todas las rutas
 porteroRoutes.use('*', authMiddleware);

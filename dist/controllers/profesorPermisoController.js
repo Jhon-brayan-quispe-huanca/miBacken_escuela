@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { PrismaClient } from '../../generated/prisma/index.js';
-import { permisoService } from '../services/carnetService.js';
-import NotificacionService from '../services/carnetService.js';
+import { permisoService } from '../services/permisoService.js';
+import NotificacionService from '../services/notificacionService.js';
 const prisma = new PrismaClient();
 export const profesorPermisoController = new Hono();
 /**

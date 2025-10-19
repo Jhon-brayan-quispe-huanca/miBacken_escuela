@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
-import { ProfesorController01 } from '../controllers/.js';
-import { authMiddleware } from '../middleware/.js';
+import { ProfesorController01 } from '../controllers/profesorController01.js';
+import { authMiddleware } from '../middleware/authMiddleware.js';
 const profesorApp = new Hono();
 // Aplicar middleware de autenticación a todas las rutas
 profesorApp.use('*', authMiddleware);

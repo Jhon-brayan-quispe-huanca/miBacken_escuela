@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
-import { CarnetController } from '../controllers/apoderadoController.js';
-import { authMiddleware } from '../middleware/.js';
+import { CarnetController } from '../controllers/carnetController.js';
+import { authMiddleware } from '../middleware/authMiddleware.js';
 
 const carnetRoutes = new Hono();
 
