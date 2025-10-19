@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
-import { PrismaClient } from '../../generated/prisma/index.js';
+import { PrismaClient } from '../generated/prisma/index.js';
 import { serve } from '@hono/node-server';
 import authRoutes from './routes/authRoutes.js';
 import directorRoutes from './routes/directorRoutes.js';
