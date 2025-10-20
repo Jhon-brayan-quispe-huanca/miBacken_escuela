@@ -27,16 +27,17 @@ export declare class DirectorController {
     }, 403, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
         data: {
-            resumen: {
-                totalEstudiantes: number;
-                totalProfesores: number;
-                totalApoderados: number;
-                totalGrados: number;
-                totalSecciones: number;
-                estudiantesActivos: number;
-                profesoresActivos: number;
-                asistenciaHoy: number;
-            };
+            estudiantes: number;
+            profesores: number;
+            grados: number;
+            secciones: number;
+            usuariosActivos: number;
+            permisosPendientes: number;
+            asistenciaPromedio: number;
+            apoderados: number;
+            estudiantesActivos: number;
+            profesoresActivos: number;
+            asistenciaHoy: number;
             estudiantesPorGrado: {
                 grado: string;
                 nivel: string;

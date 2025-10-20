@@ -178,16 +178,17 @@ export class DirectorController {
                     });
                     console.log('✅ [ESTADISTICAS] Asistencia de la semana obtenida');
                     return {
-                        resumen: {
-                            totalEstudiantes,
-                            totalProfesores,
-                            totalApoderados,
-                            totalGrados,
-                            totalSecciones,
-                            estudiantesActivos,
-                            profesoresActivos,
-                            asistenciaHoy
-                        },
+                        estudiantes: totalEstudiantes,
+                        profesores: totalProfesores,
+                        grados: totalGrados,
+                        secciones: totalSecciones,
+                        usuariosActivos: estudiantesActivos,
+                        permisosPendientes: 0,
+                        asistenciaPromedio: 0,
+                        apoderados: totalApoderados,
+                        estudiantesActivos: estudiantesActivos,
+                        profesoresActivos: profesoresActivos,
+                        asistenciaHoy: asistenciaHoy,
                         estudiantesPorGrado: estadisticasGrados,
                         asistenciaSemana: asistenciaSemana.map(item => ({
                             fecha: item.fecha,
