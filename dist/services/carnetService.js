@@ -384,7 +384,6 @@ export class CarnetService {
             });
             const page = await browser.newPage();
             // Configurar la ruta base para los recursos
-            await page.goto('file://' + process.cwd() + '/');
             await page.setContent(htmlContent, {
                 waitUntil: 'networkidle0'
             });
@@ -736,7 +735,6 @@ export class CarnetService {
             });
             const page = await browser.newPage();
             // Configurar la ruta base para los recursos
-            await page.goto('file://' + process.cwd() + '/');
             await page.setContent(htmlContent, {
                 waitUntil: 'networkidle0'
             });
@@ -788,7 +786,6 @@ export class CarnetService {
             });
             const page = await browser.newPage();
             // Configurar la ruta base para los recursos
-            await page.goto('file://' + process.cwd() + '/');
             await page.setContent(htmlContent, {
                 waitUntil: 'networkidle0'
             });
