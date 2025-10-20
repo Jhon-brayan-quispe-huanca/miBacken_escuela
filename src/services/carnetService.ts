@@ -165,11 +165,16 @@ export class CarnetService {
                 overflow: hidden;
             }
             
-            .logo-escudo img {
+            .logo-escudo div {
                 width: 100%;
                 height: 100%;
-                object-fit: contain;
                 border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-weight: bold;
+                font-size: 24px;
             }
             
             .escuela-info {
@@ -319,7 +324,7 @@ export class CarnetService {
             <div class="header">
                 <div class="logo-container">
                     <div class="logo-escudo">
-                        <img src="src/img/logo_escuela.png" alt="Logo IEP 70565" />
+                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #1e3a8a, #3b82f6); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px;">IEP</div>
                     </div>
                     <div class="escuela-info">
                         <div class="escuela-nombre">IEP 70565 MARIANO NUÑEZ</div>
@@ -568,11 +573,16 @@ export class CarnetService {
                 overflow: hidden;
             }
             
-            .logo-escudo img {
+            .logo-escudo div {
                 width: 100%;
                 height: 100%;
-                object-fit: contain;
                 border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-weight: bold;
+                font-size: 24px;
             }
             
             .escuela-info {
