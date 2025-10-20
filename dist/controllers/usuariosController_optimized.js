@@ -256,7 +256,7 @@ export class UsuariosController {
                         nombres,
                         apellidos,
                         email,
-                        password_hash: hashedPassword,
+                        password: hashedPassword,
                         telefono,
                         direccion,
                         fecha_nacimiento: fecha_nacimiento ? new Date(fecha_nacimiento) : null,
@@ -438,104 +438,5 @@ export class UsuariosController {
             }, 500);
         }
     }
-    // Obtener roles
-    static async obtenerRoles(c) {
-        try {
-            const roles = await prisma.roles.findMany({
-                select: {
-                    id: true,
-                    nombre: true,
-                    descripcion: true,
-                    requiere_dni: true,
-                    puede_login_email: true
-                },
-                orderBy: {
-                    id: 'asc'
-                }
-            });
-            return c.json({
-                success: true,
-                data: roles
-            });
-        }
-        catch (error) {
-            console.error('Error al obtener roles:', error);
-            return c.json({
-                success: false,
-                message: 'Error interno del servidor'
-            }, 500);
-        }
-    }
-    // Cambiar contraseña
-    static async cambiarContrasena(c) {
-        try {
-            const user = c.get('user');
-            if (!user || user.rol_id !== 1) {
-                return c.json({
-                    success: false,
-                    message: 'Acceso denegado. Solo directores pueden acceder.'
-                }, 403);
-            }
-            const usuarioId = parseInt(c.req.param('id'));
-            const { nuevaContrasena } = await c.req.json();
-            if (isNaN(usuarioId)) {
-                return c.json({
-                    success: false,
-                    message: 'ID de usuario inválido'
-                }, 400);
-            }
-            const hashedPassword = await bcrypt.hash(nuevaContrasena, 10);
-            await prisma.usuarios.update({
-                where: { id: usuarioId },
-                data: { password_hash: hashedPassword }
-            });
-            return c.json({
-                success: true,
-                message: 'Contraseña actualizada exitosamente'
-            });
-        }
-        catch (error) {
-            console.error('Error al cambiar contraseña:', error);
-            return c.json({
-                success: false,
-                message: 'Error interno del servidor'
-            }, 500);
-        }
-    }
-    // Cambiar estado de usuario
-    static async cambiarEstadoUsuario(c) {
-        try {
-            const user = c.get('user');
-            if (!user || user.rol_id !== 1) {
-                return c.json({
-                    success: false,
-                    message: 'Acceso denegado. Solo directores pueden acceder.'
-                }, 403);
-            }
-            const usuarioId = parseInt(c.req.param('id'));
-            const { activo } = await c.req.json();
-            if (isNaN(usuarioId)) {
-                return c.json({
-                    success: false,
-                    message: 'ID de usuario inválido'
-                }, 400);
-            }
-            await prisma.usuarios.update({
-                where: { id: usuarioId },
-                data: { activo: activo }
-            });
-            return c.json({
-                success: true,
-                message: 'Estado de usuario actualizado exitosamente'
-            });
-        }
-        catch (error) {
-            console.error('Error al cambiar estado:', error);
-            return c.json({
-                success: false,
-                message: 'Error interno del servidor'
-            }, 500);
-        }
-    }
 }
-//# sourceMappingURL=usuariosController.js.map
+//# sourceMappingURL=usuariosController_optimized.js.map
