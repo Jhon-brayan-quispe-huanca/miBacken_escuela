@@ -1,4 +1,4 @@
-// API route para Vercel
+// Adaptador para Vercel + Hono
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
@@ -42,8 +42,21 @@ app.get('/', (c) => {
   return c.json({
     success: true,
     message: 'Backend funcionando en Vercel',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    endpoints: [
+      '/api/health',
+      '/api/test'
+    ]
   })
+})
+
+// Catch all for API routes
+app.get('/api/*', (c) => {
+  return c.json({
+    success: false,
+    message: 'Endpoint no encontrado',
+    path: c.req.path
+  }, 404)
 })
 
 export default app
