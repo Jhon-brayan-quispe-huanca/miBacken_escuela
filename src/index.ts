@@ -180,6 +180,55 @@ app.get('/api/test-db-direct', async (c) => {
   }
 })
 
+// Endpoint de prueba con SQLite local (fallback)
+app.get('/api/test-sqlite', async (c) => {
+  try {
+    console.log('🔍 [TEST-SQLITE] Probando SQLite local...');
+    
+    // Crear conexión SQLite temporal
+    const sqliteUrl = 'file:./test.db';
+    console.log('🔍 [TEST-SQLITE] Usando SQLite:', sqliteUrl);
+    
+    const { PrismaClient } = await import('../generated/prisma/index.js');
+    const prisma = new PrismaClient({
+      datasources: {
+        db: {
+          url: sqliteUrl
+        }
+      }
+    });
+
+    console.log('🔍 [TEST-SQLITE] PrismaClient creado con SQLite...');
+    
+    // Prueba simple de conexión
+    const result = await prisma.$queryRaw`SELECT 1 as test`;
+    console.log('✅ [TEST-SQLITE] Conexión SQLite exitosa:', result);
+
+    await prisma.$disconnect();
+    
+    return c.json({
+      success: true,
+      message: 'Conexión SQLite local exitosa',
+      data: {
+        connection: 'OK',
+        connectionType: 'SQLITE_LOCAL',
+        timestamp: new Date().toISOString()
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ [TEST-SQLITE] Error de conexión SQLite:', error);
+    return c.json({
+      success: false,
+      message: 'Error de conexión SQLite local',
+      error: error instanceof Error ? error.message : 'Unknown error',
+      details: {
+        timestamp: new Date().toISOString()
+      }
+    }, 500);
+  }
+})
+
 // Endpoint de login de prueba para celular (GET)
 app.get('/api/test-login', async (c) => {
   try {
