@@ -10,7 +10,7 @@ app.get('/', (c) =>
     success: true,
     message: 'Backend funcionando en Vercel',
     timestamp: new Date().toISOString(),
-    endpoints: ['/api/health', '/api/test', '/api/public/roles']
+    endpoints: ['/api/health', '/api/test', '/api/test-db', '/api/public/roles']
   })
 )
 
