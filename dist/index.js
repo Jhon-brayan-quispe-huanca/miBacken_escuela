@@ -43,6 +43,8 @@ app.use('*', cors({
     origin: [
         'http://localhost:3000',
         'http://localhost:8080',
+        'http://192.168.18.22:3000',
+        'http://10.0.2.2:3000',
         'https://unsharping-naoma-expensively.ngrok-free.dev'
     ],
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -55,6 +57,87 @@ app.get('/api/health', (c) => {
         message: 'Servidor funcionando correctamente',
         timestamp: new Date().toISOString()
     });
+});
+// Endpoint de prueba para celular
+app.get('/api/test', (c) => {
+    return c.json({
+        success: true,
+        message: 'Conexión desde celular exitosa',
+        timestamp: new Date().toISOString(),
+        ip: c.req.header('x-forwarded-for') || c.req.header('x-real-ip') || 'unknown'
+    });
+});
+// Endpoint de login de prueba para celular (GET)
+app.get('/api/test-login', async (c) => {
+    try {
+        const { PrismaClient } = await import('../generated/prisma/index.js');
+        const bcrypt = await import('bcryptjs');
+        const jwt = await import('jsonwebtoken');
+        const prisma = new PrismaClient();
+        // Buscar usuario director
+        const usuario = await prisma.usuarios.findFirst({
+            where: {
+                email: 'director@escuela.com',
+                activo: true
+            },
+            select: {
+                id: true,
+                nombres: true,
+                apellidos: true,
+                email: true,
+                password_hash: true,
+                rol_id: true,
+                roles: {
+                    select: {
+                        nombre: true
+                    }
+                }
+            }
+        });
+        if (!usuario) {
+            return c.json({
+                success: false,
+                message: 'Usuario no encontrado'
+            }, 404);
+        }
+        // Verificar contraseña (admin123)
+        const isValidPassword = await bcrypt.default.compare('admin123', usuario.password_hash);
+        if (!isValidPassword) {
+            return c.json({
+                success: false,
+                message: 'Contraseña incorrecta'
+            }, 401);
+        }
+        // Generar JWT
+        const token = jwt.default.sign({
+            userId: usuario.id,
+            userType: 'director',
+            email: usuario.email,
+            rolId: usuario.rol_id
+        }, process.env.JWT_SECRET || 'mariano_nunez_secret_key_2024_sistema_asistencia', { expiresIn: '24h' });
+        return c.json({
+            success: true,
+            message: 'Login exitoso desde celular',
+            data: {
+                token,
+                user: {
+                    id: usuario.id,
+                    tipo: 'director',
+                    email: usuario.email,
+                    nombre: usuario.nombres,
+                    apellido: usuario.apellidos,
+                    rol: usuario.roles?.nombre
+                }
+            }
+        });
+    }
+    catch (error) {
+        console.error('Error en test-login:', error);
+        return c.json({
+            success: false,
+            message: 'Error interno del servidor'
+        }, 500);
+    }
 });
 // Rutas de debug (solo para desarrollo)
 app.route('/api/debug', debugRoutes);
@@ -101,12 +184,16 @@ app.route('/api/notificaciones', notificacionController);
 // const asistenciaService = new AsistenciaService(prisma)
 // Iniciar el servidor
 const port = process.env.PORT || 3000;
+const host = process.env.HOST || '0.0.0.0'; // Permitir conexiones desde red local
 serve({
     fetch: app.fetch,
     port: Number(port),
+    hostname: host,
 });
 console.log(` Servidor ejecutándose en puerto ${port}`);
 console.log(` Health check: http://localhost:${port}/api/health`);
+console.log(` Red local: http://192.168.18.22:${port}/api/health`);
+console.log(` Para celular: http://192.168.18.22:${port}/api/health`);
 // Manejo de cierre graceful
 process.on('SIGINT', async () => {
     console.log('\n Cerrando servidor...');
