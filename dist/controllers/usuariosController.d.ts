@@ -7,13 +7,6 @@ export declare class UsuariosController {
         success: true;
         data: {
             usuarios: {
-                roles: {
-                    id: number;
-                    nombre: string;
-                    descripcion: string | null;
-                    requiere_dni: boolean | null;
-                    puede_login_email: boolean | null;
-                };
                 email: string | null;
                 id: number;
                 dni: string | null;
@@ -25,9 +18,15 @@ export declare class UsuariosController {
                 genero: string | null;
                 rol_id: number;
                 activo: boolean | null;
-                ultimo_login: string | null;
                 created_at: string | null;
                 updated_at: string | null;
+                roles: {
+                    id: number;
+                    nombre: string;
+                    descripcion: string | null;
+                    requiere_dni: boolean | null;
+                    puede_login_email: boolean | null;
+                };
             }[];
             total: number;
             pagina: number;
@@ -35,6 +34,9 @@ export declare class UsuariosController {
             totalPaginas: number;
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
+        success: false;
+        message: string;
+    }, 503, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
         message: string;
     }, 500, "json">)>;
@@ -50,21 +52,22 @@ export declare class UsuariosController {
     }, 404, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
         data: {
+            email: string | null;
+            id: number;
+            dni: string | null;
+            nombres: string;
+            apellidos: string;
+            telefono: string | null;
+            direccion: string | null;
+            fecha_nacimiento: string | null;
+            genero: string | null;
+            rol_id: number;
+            activo: boolean | null;
+            created_at: string | null;
+            updated_at: string | null;
             apoderados: {
-                usuarios: {
-                    email: string | null;
-                    id: number;
-                    dni: string | null;
-                    nombres: string;
-                    apellidos: string;
-                    telefono: string | null;
-                    direccion: string | null;
-                };
                 id: number;
                 direccion: string | null;
-                created_at: string | null;
-                updated_at: string | null;
-                usuario_id: number;
             }[];
             profesores: {
                 id: number;
@@ -78,22 +81,11 @@ export declare class UsuariosController {
                 requiere_dni: boolean | null;
                 puede_login_email: boolean | null;
             };
-            email: string | null;
-            id: number;
-            dni: string | null;
-            nombres: string;
-            apellidos: string;
-            telefono: string | null;
-            direccion: string | null;
-            fecha_nacimiento: string | null;
-            genero: string | null;
-            rol_id: number;
-            activo: boolean | null;
-            ultimo_login: string | null;
-            created_at: string | null;
-            updated_at: string | null;
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
+        success: false;
+        message: string;
+    }, 503, "json">) | (Response & import("hono").TypedResponse<{
         success: false;
         message: string;
     }, 500, "json">)>;

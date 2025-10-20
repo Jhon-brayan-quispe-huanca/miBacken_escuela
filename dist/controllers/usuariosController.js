@@ -1,9 +1,31 @@
 import { PrismaClient } from '../../generated/prisma/index.js';
 import * as bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
+// Función de retry con backoff exponencial
+async function retryWithBackoff(operation, maxRetries = 3, baseDelay = 1000) {
+    let lastError;
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+            return await operation();
+        }
+        catch (error) {
+            lastError = error;
+            if (attempt === maxRetries) {
+                throw lastError;
+            }
+            // Backoff exponencial: 1s, 2s, 4s
+            const delay = baseDelay * Math.pow(2, attempt);
+            console.log(`⚠️ Intento ${attempt + 1} falló, reintentando en ${delay}ms...`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
+    }
+    throw lastError;
+}
 export class UsuariosController {
     // Obtener todos los usuarios con paginación
     static async obtenerUsuarios(c) {
+        const startTime = Date.now();
+        console.log(' [USUARIOS] Iniciando consulta de usuarios...');
         try {
             const user = c.get('user');
             if (!user || user.rol_id !== 1) {
@@ -13,10 +35,11 @@ export class UsuariosController {
                 }, 403);
             }
             const page = parseInt(c.req.query('page') || '1');
-            const limit = parseInt(c.req.query('limit') || '10');
+            const limit = Math.min(parseInt(c.req.query('limit') || '10'), 50); // Máximo 50 por página
             const search = c.req.query('search') || '';
             const rolId = c.req.query('rol_id');
             const activo = c.req.query('activo');
+            console.log('🔍 [USUARIOS] Parámetros:', { page, limit, search, rolId, activo });
             const skip = (page - 1) * limit;
             // Construir filtros
             const where = {};
@@ -34,38 +57,54 @@ export class UsuariosController {
             if (activo !== undefined && activo !== '') {
                 where.activo = activo === 'true';
             }
-            const [usuarios, total] = await Promise.all([
-                prisma.usuarios.findMany({
-                    where,
-                    skip,
-                    take: limit,
-                    include: {
-                        roles: {
-                            select: {
-                                id: true,
-                                nombre: true,
-                                descripcion: true,
-                                requiere_dni: true,
-                                puede_login_email: true
+            console.log(' [USUARIOS] Filtros aplicados:', where);
+            // Usar retry para las consultas críticas
+            const [usuarios, total] = await retryWithBackoff(async () => {
+                console.log(' [USUARIOS] Ejecutando consultas con retry...');
+                return await Promise.all([
+                    prisma.usuarios.findMany({
+                        where,
+                        skip,
+                        take: limit,
+                        select: {
+                            id: true,
+                            dni: true,
+                            nombres: true,
+                            apellidos: true,
+                            email: true,
+                            telefono: true,
+                            direccion: true,
+                            fecha_nacimiento: true,
+                            genero: true,
+                            rol_id: true,
+                            activo: true,
+                            created_at: true,
+                            updated_at: true,
+                            roles: {
+                                select: {
+                                    id: true,
+                                    nombre: true,
+                                    descripcion: true,
+                                    requiere_dni: true,
+                                    puede_login_email: true
+                                }
                             }
+                        },
+                        orderBy: {
+                            created_at: 'desc'
                         }
-                    },
-                    orderBy: {
-                        created_at: 'desc'
-                    }
-                }),
-                prisma.usuarios.count({ where })
-            ]);
-            // Omitir password_hash en la respuesta
-            const usuariosLimpios = usuarios.map(usuario => {
-                const { password_hash, ...usuarioSinPassword } = usuario;
-                return usuarioSinPassword;
+                    }),
+                    prisma.usuarios.count({ where })
+                ]);
             });
+            const queryTime = Date.now() - startTime;
+            console.log(` [USUARIOS] Consulta completada en ${queryTime}ms`);
+            console.log(` [USUARIOS] Resultados: ${usuarios.length} usuarios de ${total} total`);
             const totalPaginas = Math.ceil(total / limit);
             return c.json({
                 success: true,
                 data: {
-                    usuarios: usuariosLimpios,
+                    usuarios,
                     total,
                     pagina: page,
                     limite: limit,
@@ -74,7 +113,17 @@ export class UsuariosController {
             });
         }
         catch (error) {
-            console.error('Error al obtener usuarios:', error);
+            const errorTime = Date.now() - startTime;
+            console.error(` [USUARIOS] Error después de ${errorTime}ms:`, error);
+            // Detectar tipo de error para mejor mensaje
+            if (error instanceof Error) {
+                if (error.message.includes('connection') || error.message.includes('timeout')) {
+                    return c.json({
+                        success: false,
+                        message: 'Error de conexión a la base de datos. Intente nuevamente.'
+                    }, 503);
+                }
+            }
             return c.json({
                 success: false,
                 message: 'Error interno del servidor'
@@ -83,6 +132,9 @@ export class UsuariosController {
     }
     // Obtener usuario por ID
     static async obtenerUsuarioPorId(c) {
+        const startTime = Date.now();
+        const id = parseInt(c.req.param('id'));
+        console.log(`🔍 [USUARIO_ID] Iniciando consulta para usuario ID: ${id}`);
         try {
             const user = c.get('user');
             if (!user || user.rol_id !== 1) {
@@ -91,48 +143,55 @@ export class UsuariosController {
                     message: 'Acceso denegado. Solo directores pueden acceder.'
                 }, 403);
             }
-            const id = parseInt(c.req.param('id'));
             if (isNaN(id)) {
                 return c.json({
                     success: false,
                     message: 'ID de usuario inválido'
                 }, 400);
             }
-            const usuario = await prisma.usuarios.findUnique({
-                where: { id },
-                include: {
-                    roles: {
-                        select: {
-                            id: true,
-                            nombre: true,
-                            descripcion: true,
-                            requiere_dni: true,
-                            puede_login_email: true
-                        }
-                    },
-                    apoderados: {
-                        include: {
-                            usuarios: {
-                                select: {
-                                    id: true,
-                                    dni: true,
-                                    nombres: true,
-                                    apellidos: true,
-                                    email: true,
-                                    telefono: true,
-                                    direccion: true
-                                }
+            // Usar retry para la consulta crítica
+            const usuario = await retryWithBackoff(async () => {
+                console.log(`🔍 [USUARIO_ID] Ejecutando consulta con retry para ID: ${id}`);
+                return await prisma.usuarios.findUnique({
+                    where: { id },
+                    select: {
+                        id: true,
+                        dni: true,
+                        nombres: true,
+                        apellidos: true,
+                        email: true,
+                        telefono: true,
+                        direccion: true,
+                        fecha_nacimiento: true,
+                        genero: true,
+                        rol_id: true,
+                        activo: true,
+                        created_at: true,
+                        updated_at: true,
+                        roles: {
+                            select: {
+                                id: true,
+                                nombre: true,
+                                descripcion: true,
+                                requiere_dni: true,
+                                puede_login_email: true
+                            }
+                        },
+                        apoderados: {
+                            select: {
+                                id: true,
+                                direccion: true
+                            }
+                        },
+                        profesores: {
+                            select: {
+                                id: true,
+                                tipo_profesor: true,
+                                especialidad: true
                             }
                         }
-                    },
-                    profesores: {
-                        select: {
-                            id: true,
-                            tipo_profesor: true,
-                            especialidad: true
-                        }
                     }
-                }
+                });
             });
             if (!usuario) {
                 return c.json({
@@ -140,78 +199,40 @@ export class UsuariosController {
                     message: 'Usuario no encontrado'
                 }, 404);
             }
-            // Omitir password_hash en la respuesta
-            const { password_hash, ...usuarioSinPassword } = usuario;
+            const queryTime = Date.now() - startTime;
+            console.log(`✅ [USUARIO_ID] Consulta completada en ${queryTime}ms`);
             // Transformar datos de apoderados para que coincidan con el modelo del frontend
-            console.log('🔍 DEBUG - Verificando si hay apoderados...');
-            console.log('🔍 DEBUG - apoderados existe:', !!usuarioSinPassword.apoderados);
-            console.log('🔍 DEBUG - apoderados length:', usuarioSinPassword.apoderados?.length);
-            if (usuarioSinPassword.apoderados && usuarioSinPassword.apoderados.length > 0) {
-                console.log('🔍 DEBUG - Transformando datos de apoderados...');
-                console.log('🔍 DEBUG - Datos originales del apoderado:', usuarioSinPassword.apoderados[0]);
-                usuarioSinPassword.apoderados = usuarioSinPassword.apoderados.map((apoderado) => {
-                    const apoderadoTransformado = {
-                        id: apoderado.id,
-                        dni: usuarioSinPassword.dni,
-                        nombres: usuarioSinPassword.nombres,
-                        apellidos: usuarioSinPassword.apellidos,
-                        email: usuarioSinPassword.email,
-                        telefono: usuarioSinPassword.telefono,
-                        direccion: apoderado.direccion || '',
-                        activo: usuarioSinPassword.activo
-                    };
-                    console.log('🔍 DEBUG - Apoderado transformado:', apoderadoTransformado);
-                    return apoderadoTransformado;
-                });
+            if (usuario.apoderados && usuario.apoderados.length > 0) {
+                console.log('🔍 [USUARIO_ID] Transformando datos de apoderados...');
+                usuario.apoderados = usuario.apoderados.map((apoderado) => ({
+                    id: apoderado.id,
+                    dni: usuario.dni,
+                    nombres: usuario.nombres,
+                    apellidos: usuario.apellidos,
+                    email: usuario.email,
+                    telefono: usuario.telefono,
+                    direccion: apoderado.direccion || '',
+                    activo: usuario.activo
+                }));
             }
-            else {
-                console.log('🔍 DEBUG - No hay datos de apoderado para transformar');
-                console.log('🔍 DEBUG - Usuario sin apoderados:', {
-                    id: usuarioSinPassword.id,
-                    nombres: usuarioSinPassword.nombres,
-                    apellidos: usuarioSinPassword.apellidos,
-                    rol_id: usuarioSinPassword.rol_id
-                });
-            }
-            // Debug: Verificar datos del usuario
-            console.log('🔍 DEBUG - Usuario encontrado:', {
-                id: usuarioSinPassword.id,
-                nombres: usuarioSinPassword.nombres,
-                apellidos: usuarioSinPassword.apellidos,
-                rol_id: usuarioSinPassword.rol_id,
-                apoderados: usuarioSinPassword.apoderados
-            });
-            // Debug específico para apoderados
-            if (usuarioSinPassword.apoderados && usuarioSinPassword.apoderados.length > 0) {
-                console.log('🔍 DEBUG - Datos del apoderado que se enviarán al frontend:');
-                usuarioSinPassword.apoderados.forEach((apoderado, index) => {
-                    console.log(`  Apoderado ${index + 1}:`, {
-                        id: apoderado.id,
-                        dni: apoderado.dni,
-                        nombres: apoderado.nombres,
-                        apellidos: apoderado.apellidos,
-                        email: apoderado.email,
-                        telefono: apoderado.telefono,
-                        direccion: apoderado.direccion,
-                        ocupacion: apoderado.ocupacion,
-                        telefono_emergencia: apoderado.telefono_emergencia,
-                        activo: apoderado.activo
-                    });
-                });
-            }
-            else {
-                console.log('🔍 DEBUG - No hay datos de apoderado para enviar al frontend');
-                console.log('🔍 DEBUG - Verificando si el usuario tiene rol apoderado...');
-                console.log('🔍 DEBUG - Rol del usuario:', usuarioSinPassword.roles?.nombre);
-                console.log('🔍 DEBUG - Usuario completo:', JSON.stringify(usuarioSinPassword, null, 2));
-            }
+            console.log(`📊 [USUARIO_ID] Usuario encontrado: ${usuario.nombres} ${usuario.apellidos} (${usuario.roles?.nombre})`);
             return c.json({
                 success: true,
-                data: usuarioSinPassword
+                data: usuario
             });
         }
         catch (error) {
-            console.error('Error al obtener usuario:', error);
+            const errorTime = Date.now() - startTime;
+            console.error(`❌ [USUARIO_ID] Error después de ${errorTime}ms para ID ${id}:`, error);
+            // Detectar tipo de error para mejor mensaje
+            if (error instanceof Error) {
+                if (error.message.includes('connection') || error.message.includes('timeout')) {
+                    return c.json({
+                        success: false,
+                        message: 'Error de conexión a la base de datos. Intente nuevamente.'
+                    }, 503);
+                }
+            }
             return c.json({
                 success: false,
                 message: 'Error interno del servidor'

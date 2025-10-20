@@ -3,14 +3,14 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { PrismaClient } from '../generated/prisma/index.js';
-// Configuración optimizada para Render Free Tier
+// Configuración optimizada para Vercel
 const prisma = new PrismaClient({
     datasources: {
         db: {
             url: process.env.DATABASE_URL
         }
     },
-    // Configuración para Render Free Tier
+    // Configuración para Vercel
     log: ['error'],
     errorFormat: 'minimal'
 });
