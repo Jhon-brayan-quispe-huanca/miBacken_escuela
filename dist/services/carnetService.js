@@ -8,6 +8,7 @@ export class CarnetService {
      */
     async obtenerDatosEstudiante(estudianteId) {
         try {
+            console.log('🔍 [CARNET-SERVICE] Obteniendo datos del estudiante ID:', estudianteId);
             const estudiante = await prisma.estudiantes.findUnique({
                 where: { id: estudianteId },
                 include: {
@@ -25,8 +26,15 @@ export class CarnetService {
                 }
             });
             if (!estudiante) {
+                console.log('❌ [CARNET-SERVICE] Estudiante no encontrado');
                 return null;
             }
+            console.log('✅ [CARNET-SERVICE] Datos del estudiante obtenidos:', {
+                codigo: estudiante.codigo_estudiante,
+                nombre: estudiante.nombres,
+                grado: estudiante.grados?.nombre,
+                seccion: estudiante.secciones?.nombre
+            });
             return {
                 codigo_estudiante: estudiante.codigo_estudiante,
                 nombre: estudiante.nombres,
@@ -37,7 +45,7 @@ export class CarnetService {
             };
         }
         catch (error) {
-            console.error('Error al obtener datos del estudiante:', error);
+            console.error('❌ [CARNET-SERVICE] Error al obtener datos del estudiante:', error);
             throw new Error('Error al obtener datos del estudiante');
         }
     }
@@ -368,25 +376,44 @@ export class CarnetService {
     async generarPDFCarnet(estudianteId) {
         let browser;
         try {
+            console.log('🎫 [CARNET-SERVICE] Iniciando generación de PDF para estudiante:', estudianteId);
             // Obtener datos del estudiante
             const datosEstudiante = await this.obtenerDatosEstudiante(estudianteId);
             if (!datosEstudiante) {
+                console.log('❌ [CARNET-SERVICE] Estudiante no encontrado');
                 throw new Error('Estudiante no encontrado');
             }
+            console.log('✅ [CARNET-SERVICE] Datos obtenidos, generando QR...');
             // Generar QR
             const qrCodeDataURL = await this.generarQR(datosEstudiante);
+            console.log('✅ [CARNET-SERVICE] QR generado');
             // Generar HTML
             const htmlContent = this.generarHTMLCarnet(datosEstudiante, qrCodeDataURL);
+            console.log('✅ [CARNET-SERVICE] HTML generado');
             // Generar PDF con Puppeteer
+            console.log('🚀 [CARNET-SERVICE] Iniciando Puppeteer...');
             browser = await puppeteer.launch({
                 headless: true,
-                args: ['--no-sandbox', '--disable-setuid-sandbox']
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    '--disable-dev-shm-usage',
+                    '--disable-accelerated-2d-canvas',
+                    '--no-first-run',
+                    '--no-zygote',
+                    '--single-process',
+                    '--disable-gpu'
+                ]
             });
             const page = await browser.newPage();
-            // Configurar la ruta base para los recursos
+            // Configurar timeout para la página
+            page.setDefaultTimeout(30000);
+            console.log('📄 [CARNET-SERVICE] Configurando contenido HTML...');
             await page.setContent(htmlContent, {
-                waitUntil: 'networkidle0'
+                waitUntil: 'networkidle0',
+                timeout: 30000
             });
+            console.log('📄 [CARNET-SERVICE] Generando PDF...');
             const pdfBuffer = await page.pdf({
                 width: '480px',
                 printBackground: true,
@@ -397,14 +424,16 @@ export class CarnetService {
                     left: '0px'
                 }
             });
+            console.log('✅ [CARNET-SERVICE] PDF generado exitosamente');
             return Buffer.from(pdfBuffer);
         }
         catch (error) {
-            console.error('Error al generar PDF del carnet:', error);
+            console.error('❌ [CARNET-SERVICE] Error al generar PDF del carnet:', error);
             throw new Error('Error al generar PDF del carnet');
         }
         finally {
             if (browser) {
+                console.log('🔒 [CARNET-SERVICE] Cerrando navegador...');
                 await browser.close();
             }
         }
