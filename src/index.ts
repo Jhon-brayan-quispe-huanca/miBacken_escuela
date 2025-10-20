@@ -123,6 +123,63 @@ app.get('/api/test-db', async (c) => {
   }
 })
 
+// Endpoint de prueba con conexión directa (sin pooler)
+app.get('/api/test-db-direct', async (c) => {
+  try {
+    console.log('🔍 [TEST-DB-DIRECT] Probando conexión directa...');
+    
+    const { PrismaClient } = await import('../generated/prisma/index.js');
+    
+    // Usar DIRECT_URL si está disponible, sino DATABASE_URL
+    const directUrl = process.env.DIRECT_URL || process.env.DATABASE_URL;
+    console.log('🔍 [TEST-DB-DIRECT] Usando URL:', directUrl ? 'SET' : 'NOT SET');
+    
+    const prisma = new PrismaClient({
+      datasources: {
+        db: {
+          url: directUrl
+        }
+      }
+    });
+
+    console.log('🔍 [TEST-DB-DIRECT] PrismaClient creado con conexión directa...');
+    
+    // Prueba simple de conexión
+    const result = await prisma.$queryRaw`SELECT 1 as test`;
+    console.log('✅ [TEST-DB-DIRECT] Conexión directa exitosa:', result);
+
+    // Probar consulta de usuarios
+    const userCount = await prisma.usuarios.count();
+    console.log('✅ [TEST-DB-DIRECT] Usuarios en DB:', userCount);
+
+    await prisma.$disconnect();
+    
+    return c.json({
+      success: true,
+      message: 'Conexión directa a base de datos exitosa',
+      data: {
+        connection: 'OK',
+        userCount,
+        connectionType: 'DIRECT',
+        timestamp: new Date().toISOString()
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ [TEST-DB-DIRECT] Error de conexión directa:', error);
+    return c.json({
+      success: false,
+      message: 'Error de conexión directa a base de datos',
+      error: error instanceof Error ? error.message : 'Unknown error',
+      details: {
+        directUrl: process.env.DIRECT_URL ? 'SET' : 'NOT SET',
+        databaseUrl: process.env.DATABASE_URL ? 'SET' : 'NOT SET',
+        timestamp: new Date().toISOString()
+      }
+    }, 500);
+  }
+})
+
 // Endpoint de login de prueba para celular (GET)
 app.get('/api/test-login', async (c) => {
   try {
