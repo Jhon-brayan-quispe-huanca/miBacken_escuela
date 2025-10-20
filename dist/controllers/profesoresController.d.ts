@@ -29,9 +29,9 @@ export declare class ProfesoresController {
                 activo: boolean | null;
                 created_at: string | null;
                 updated_at: string | null;
+                profesor_id: number;
                 grado_id: number;
                 seccion_id: number;
-                profesor_id: number;
                 es_tutor: boolean | null;
                 anio_escolar: number;
             }[];
@@ -90,9 +90,9 @@ export declare class ProfesoresController {
                 activo: boolean | null;
                 created_at: string | null;
                 updated_at: string | null;
+                profesor_id: number;
                 grado_id: number;
                 seccion_id: number;
-                profesor_id: number;
                 es_tutor: boolean | null;
                 anio_escolar: number;
             }[];
@@ -256,9 +256,9 @@ export declare class ProfesoresController {
             activo: boolean | null;
             created_at: string | null;
             updated_at: string | null;
+            profesor_id: number;
             grado_id: number;
             seccion_id: number;
-            profesor_id: number;
             es_tutor: boolean | null;
             anio_escolar: number;
         };
@@ -302,9 +302,9 @@ export declare class ProfesoresController {
                 activo: boolean | null;
                 created_at: string | null;
                 updated_at: string | null;
+                profesor_id: number;
                 grado_id: number;
                 seccion_id: number;
-                profesor_id: number;
                 es_tutor: boolean | null;
                 anio_escolar: number;
             }[];

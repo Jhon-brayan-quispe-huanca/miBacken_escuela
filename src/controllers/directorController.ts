@@ -114,116 +114,164 @@ export class DirectorController {
     }
   }
 
-  // Obtener estadísticas del dashboard
+  // Obtener estadísticas del dashboard OPTIMIZADO
   static async obtenerEstadisticasDashboard(c: Context) {
+    const startTime = Date.now();
+    console.log('📊 [ESTADISTICAS] Iniciando consulta de estadísticas...');
+    
     try {
       const user = c.get('user');
       
       if (!user || user.rol_id !== 1) {
-        return c.json({ message: 'Acceso denegado. Solo directores pueden acceder.' }, 403);
+        console.log('❌ [ESTADISTICAS] Acceso denegado - Usuario no es director');
+        return c.json({ 
+          success: false,
+          message: 'Acceso denegado. Solo directores pueden acceder.' 
+        }, 403);
       }
 
-      // Obtener estadísticas generales
-      const [
-        totalEstudiantes,
-        totalProfesores,
-        totalApoderados,
-        totalGrados,
-        totalSecciones,
-        estudiantesActivos,
-        profesoresActivos
-      ] = await Promise.all([
-        prisma.estudiantes.count(),
-        prisma.profesores.count(),
-        prisma.apoderados.count(),
-        prisma.grados.count(),
-        prisma.secciones.count(),
-        prisma.estudiantes.count({
-          where: {
-            estado: 'activo'
-          }
-        }),
-        prisma.profesores.count({
-          where: {
-            usuarios: {
-              activo: true
+      console.log('✅ [ESTADISTICAS] Usuario autorizado, obteniendo estadísticas...');
+
+      // Consulta optimizada con timeout de 10 segundos
+      const estadisticas = await Promise.race([
+        (async () => {
+          // Obtener estadísticas generales con consultas optimizadas
+          const [
+            totalEstudiantes,
+            totalProfesores,
+            totalApoderados,
+            totalGrados,
+            totalSecciones,
+            estudiantesActivos,
+            profesoresActivos
+          ] = await Promise.all([
+            prisma.estudiantes.count(),
+            prisma.profesores.count(),
+            prisma.apoderados.count(),
+            prisma.grados.count(),
+            prisma.secciones.count(),
+            prisma.estudiantes.count({
+              where: {
+                estado: 'activo'
+              }
+            }),
+            prisma.profesores.count({
+              where: {
+                usuarios: {
+                  activo: true
+                }
+              }
+            })
+          ]);
+
+          console.log('✅ [ESTADISTICAS] Conteos básicos obtenidos');
+
+          // Obtener asistencia de hoy (simplificado)
+          const hoy = new Date();
+          hoy.setHours(0, 0, 0, 0);
+
+          const asistenciaHoy = await prisma.asistencia_general.count({
+            where: {
+              fecha: hoy,
+              estado: 'Presente'
             }
-          }
-        })
+          });
+
+          console.log('✅ [ESTADISTICAS] Asistencia de hoy obtenida');
+
+          // Obtener estudiantes por grado (simplificado)
+          const estudiantesPorGrado = await prisma.grados.findMany({
+            select: {
+              nombre: true,
+              nivel: true,
+              _count: {
+                select: {
+                  estudiantes: {
+                    where: {
+                      estado: 'activo'
+                    }
+                  }
+                }
+              }
+            }
+          });
+
+          const estadisticasGrados = estudiantesPorGrado.map(grado => ({
+            grado: grado.nombre,
+            nivel: grado.nivel,
+            cantidad: grado._count.estudiantes
+          }));
+
+          console.log('✅ [ESTADISTICAS] Estudiantes por grado obtenidos');
+
+          // Obtener asistencia de la última semana (simplificado)
+          const hace7Dias = new Date();
+          hace7Dias.setDate(hace7Dias.getDate() - 7);
+
+          const asistenciaSemana = await prisma.asistencia_general.groupBy({
+            by: ['fecha'],
+            where: {
+              fecha: {
+                gte: hace7Dias
+              }
+            },
+            _count: {
+              id: true
+            },
+            orderBy: {
+              fecha: 'asc'
+            }
+          });
+
+          console.log('✅ [ESTADISTICAS] Asistencia de la semana obtenida');
+
+          return {
+            resumen: {
+              totalEstudiantes,
+              totalProfesores,
+              totalApoderados,
+              totalGrados,
+              totalSecciones,
+              estudiantesActivos,
+              profesoresActivos,
+              asistenciaHoy
+            },
+            estudiantesPorGrado: estadisticasGrados,
+            asistenciaSemana: asistenciaSemana.map(item => ({
+              fecha: item.fecha,
+              cantidad: item._count.id
+            }))
+          };
+        })(),
+        new Promise<never>((_, reject) => 
+          setTimeout(() => reject(new Error('Timeout: Consulta de estadísticas tardó demasiado')), 10000)
+        )
       ]);
 
-      // Obtener asistencia de hoy
-      const hoy = new Date();
-      hoy.setHours(0, 0, 0, 0);
-
-      const asistenciaHoy = await prisma.asistencia_general.count({
-        where: {
-          fecha: hoy,
-          estado: 'Presente'
-        }
-      });
-
-      // Obtener estudiantes por grado
-      const estudiantesPorGrado = await prisma.grados.findMany({
-        include: {
-          estudiantes: {
-            where: {
-              estado: 'activo'
-            }
-          }
-        }
-      });
-
-      const estadisticasGrados = estudiantesPorGrado.map(grado => ({
-        grado: grado.nombre,
-        nivel: grado.nivel,
-        cantidad: grado.estudiantes.length
-      }));
-
-      // Obtener asistencia de la última semana
-      const hace7Dias = new Date();
-      hace7Dias.setDate(hace7Dias.getDate() - 7);
-
-      const asistenciaSemana = await prisma.asistencia_general.groupBy({
-        by: ['fecha'],
-        where: {
-          fecha: {
-            gte: hace7Dias
-          }
-        },
-        _count: {
-          id: true
-        },
-        orderBy: {
-          fecha: 'asc'
-        }
-      });
-
-      const estadisticas = {
-        resumen: {
-          totalEstudiantes,
-          totalProfesores,
-          totalApoderados,
-          totalGrados,
-          totalSecciones,
-          estudiantesActivos,
-          profesoresActivos,
-          asistenciaHoy
-        },
-        estudiantesPorGrado: estadisticasGrados,
-        asistenciaSemana: asistenciaSemana.map(item => ({
-          fecha: item.fecha,
-          cantidad: item._count.id
-        }))
-      };
+      const queryTime = Date.now() - startTime;
+      console.log(`✅ [ESTADISTICAS] Estadísticas obtenidas en ${queryTime}ms`);
 
       return c.json({
         success: true,
-        estadisticas
+        data: estadisticas
       });
     } catch (error) {
-      console.error('Error al obtener estadísticas del dashboard:', error);
-      return c.json({ message: 'Error interno del servidor' }, 500);
+      const errorTime = Date.now() - startTime;
+      console.error(`❌ [ESTADISTICAS] Error después de ${errorTime}ms:`, error);
+      
+      if (error instanceof Error) {
+        if (error.message.includes('Timeout')) {
+          return c.json({ 
+            success: false,
+            message: 'La consulta de estadísticas tardó demasiado. Intente nuevamente.' 
+          }, 408);
+        }
+      }
+      
+      return c.json({ 
+        success: false,
+        message: 'Error interno del servidor al obtener estadísticas' 
+      }, 500);
     }
   }
 

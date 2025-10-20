@@ -22,10 +22,11 @@ export declare class DirectorController {
         message: string;
     }, 500, "json">)>;
     static obtenerEstadisticasDashboard(c: Context): Promise<(Response & import("hono").TypedResponse<{
+        success: false;
         message: string;
     }, 403, "json">) | (Response & import("hono").TypedResponse<{
         success: true;
-        estadisticas: {
+        data: {
             resumen: {
                 totalEstudiantes: number;
                 totalProfesores: number;
@@ -47,6 +48,10 @@ export declare class DirectorController {
             }[];
         };
     }, import("hono/utils/http-status.js").ContentfulStatusCode, "json">) | (Response & import("hono").TypedResponse<{
+        success: false;
+        message: string;
+    }, 408, "json">) | (Response & import("hono").TypedResponse<{
+        success: false;
         message: string;
     }, 500, "json">)>;
     static cambiarContrasena(c: Context): Promise<(Response & import("hono").TypedResponse<{
@@ -94,9 +99,9 @@ export declare class DirectorController {
             activo: boolean | null;
             created_at: string | null;
             updated_at: string | null;
+            profesor_id: number;
             grado_id: number;
             seccion_id: number;
-            profesor_id: number;
             es_tutor: boolean | null;
             anio_escolar: number;
         }[];
@@ -141,9 +146,9 @@ export declare class DirectorController {
             activo: boolean | null;
             created_at: string | null;
             updated_at: string | null;
+            profesor_id: number;
             grado_id: number;
             seccion_id: number;
-            profesor_id: number;
             es_tutor: boolean | null;
             anio_escolar: number;
         };
@@ -188,9 +193,9 @@ export declare class DirectorController {
             activo: boolean | null;
             created_at: string | null;
             updated_at: string | null;
+            profesor_id: number;
             grado_id: number;
             seccion_id: number;
-            profesor_id: number;
             es_tutor: boolean | null;
             anio_escolar: number;
         };

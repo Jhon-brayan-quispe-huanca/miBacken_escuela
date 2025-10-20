@@ -38,9 +38,9 @@ export declare class EstudiantesController {
                 created_at: string | null;
                 updated_at: string | null;
                 estado: string | null;
-                apoderado_id: number;
                 grado_id: number;
                 seccion_id: number;
+                apoderado_id: number;
                 codigo_estudiante: string;
                 turno: string;
             }[];
@@ -98,9 +98,9 @@ export declare class EstudiantesController {
             created_at: string | null;
             updated_at: string | null;
             estado: string | null;
-            apoderado_id: number;
             grado_id: number;
             seccion_id: number;
+            apoderado_id: number;
             codigo_estudiante: string;
             turno: string;
         };
@@ -149,9 +149,9 @@ export declare class EstudiantesController {
             created_at: string | null;
             updated_at: string | null;
             estado: string | null;
-            apoderado_id: number;
             grado_id: number;
             seccion_id: number;
+            apoderado_id: number;
             codigo_estudiante: string;
             turno: string;
         };
@@ -203,9 +203,9 @@ export declare class EstudiantesController {
             created_at: string | null;
             updated_at: string | null;
             estado: string | null;
-            apoderado_id: number;
             grado_id: number;
             seccion_id: number;
+            apoderado_id: number;
             codigo_estudiante: string;
             turno: string;
         };
@@ -231,9 +231,9 @@ export declare class EstudiantesController {
             created_at: string | null;
             updated_at: string | null;
             estado: string | null;
-            apoderado_id: number;
             grado_id: number;
             seccion_id: number;
+            apoderado_id: number;
             codigo_estudiante: string;
             turno: string;
         };
