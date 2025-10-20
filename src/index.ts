@@ -82,8 +82,6 @@ app.get('/api/test-db', async (c) => {
     console.log('🔍 [TEST-DB] Iniciando prueba de conexión...');
     console.log('🔍 [TEST-DB] DATABASE_URL:', process.env.DATABASE_URL ? 'SET' : 'NOT SET');
     console.log('🔍 [TEST-DB] DIRECT_URL:', process.env.DIRECT_URL ? 'SET' : 'NOT SET');
-    console.log('🔍 [TEST-DB] DATABASE_URL value:', process.env.DATABASE_URL);
-    console.log('🔍 [TEST-DB] DIRECT_URL value:', process.env.DIRECT_URL);
     
     const { PrismaClient } = await import('../generated/prisma/index.js');
     const prisma = new PrismaClient();
@@ -119,8 +117,6 @@ app.get('/api/test-db', async (c) => {
       details: {
         databaseUrl: process.env.DATABASE_URL ? 'SET' : 'NOT SET',
         directUrl: process.env.DIRECT_URL ? 'SET' : 'NOT SET',
-        databaseUrlValue: process.env.DATABASE_URL,
-        directUrlValue: process.env.DIRECT_URL,
         timestamp: new Date().toISOString()
       }
     }, 500);

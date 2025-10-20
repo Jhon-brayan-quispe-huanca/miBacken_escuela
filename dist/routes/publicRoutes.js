@@ -9,7 +9,9 @@ publicRoutes.get('/roles', async (c) => {
             select: {
                 id: true,
                 nombre: true,
-                descripcion: true
+                descripcion: true,
+                requiere_dni: true,
+                puede_login_email: true
             },
             orderBy: {
                 id: 'asc'
