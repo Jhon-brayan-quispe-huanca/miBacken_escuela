@@ -31,8 +31,8 @@ export class CarnetService {
                 codigo_estudiante: estudiante.codigo_estudiante,
                 nombre: estudiante.nombres,
                 apellido: estudiante.apellidos,
-                grado: estudiante.grados.nombre, // Solo el nombre del grado que ya incluye el nivel
-                seccion: estudiante.secciones.nombre,
+                grado: estudiante.grados?.nombre || 'Sin grado',
+                seccion: estudiante.secciones?.nombre || 'Sin sección',
                 turno: estudiante.turno
             };
         }
