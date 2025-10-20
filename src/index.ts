@@ -76,20 +76,67 @@ app.get('/api/test', (c) => {
   })
 })
 
+// Endpoint de prueba de conexión a DB
+app.get('/api/test-db', async (c) => {
+  try {
+    console.log('🔍 [TEST-DB] Iniciando prueba de conexión...');
+    console.log('🔍 [TEST-DB] DATABASE_URL:', process.env.DATABASE_URL ? 'SET' : 'NOT SET');
+    console.log('🔍 [TEST-DB] DIRECT_URL:', process.env.DIRECT_URL ? 'SET' : 'NOT SET');
+    
+    const { PrismaClient } = await import('../generated/prisma/index.js');
+    const prisma = new PrismaClient();
+
+    console.log('🔍 [TEST-DB] PrismaClient creado, probando conexión...');
+    
+    // Prueba simple de conexión
+    const result = await prisma.$queryRaw`SELECT 1 as test`;
+    console.log('✅ [TEST-DB] Conexión exitosa:', result);
+
+    // Probar consulta de usuarios
+    const userCount = await prisma.usuarios.count();
+    console.log('✅ [TEST-DB] Usuarios en DB:', userCount);
+
+    await prisma.$disconnect();
+    
+    return c.json({
+      success: true,
+      message: 'Conexión a base de datos exitosa',
+      data: {
+        connection: 'OK',
+        userCount,
+        timestamp: new Date().toISOString()
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ [TEST-DB] Error de conexión:', error);
+    return c.json({
+      success: false,
+      message: 'Error de conexión a base de datos',
+      error: error instanceof Error ? error.message : 'Unknown error',
+      details: {
+        databaseUrl: process.env.DATABASE_URL ? 'SET' : 'NOT SET',
+        directUrl: process.env.DIRECT_URL ? 'SET' : 'NOT SET',
+        timestamp: new Date().toISOString()
+      }
+    }, 500);
+  }
+})
+
 // Endpoint de login de prueba para celular (GET)
 app.get('/api/test-login', async (c) => {
   try {
     const { PrismaClient } = await import('../generated/prisma/index.js');
     const bcrypt = await import('bcryptjs');
     const jwt = await import('jsonwebtoken');
-    
+
     const prisma = new PrismaClient();
-    
+
     // Buscar usuario director
     const usuario = await prisma.usuarios.findFirst({
-      where: { 
+      where: {
         email: 'director@escuela.com',
-        activo: true 
+        activo: true
       },
       select: {
         id: true,
@@ -107,25 +154,25 @@ app.get('/api/test-login', async (c) => {
     });
 
     if (!usuario) {
-      return c.json({ 
-        success: false, 
-        message: 'Usuario no encontrado' 
+      return c.json({
+        success: false,
+        message: 'Usuario no encontrado'
       }, 404);
     }
 
     // Verificar contraseña (admin123)
     const isValidPassword = await bcrypt.default.compare('admin123', usuario.password_hash);
-    
+
     if (!isValidPassword) {
-      return c.json({ 
-        success: false, 
-        message: 'Contraseña incorrecta' 
+      return c.json({
+        success: false,
+        message: 'Contraseña incorrecta'
       }, 401);
     }
 
     // Generar JWT
     const token = jwt.default.sign(
-      { 
+      {
         userId: usuario.id,
         userType: 'director',
         email: usuario.email,
@@ -153,9 +200,9 @@ app.get('/api/test-login', async (c) => {
 
   } catch (error) {
     console.error('Error en test-login:', error);
-    return c.json({ 
-      success: false, 
-      message: 'Error interno del servidor' 
+    return c.json({
+      success: false,
+      message: 'Error interno del servidor'
     }, 500);
   }
 })
